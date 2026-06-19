@@ -52,7 +52,7 @@ O **NFERC** lê o XML da NF-e, consulta o plano de contas e sugere a _categoria_
 
 @TODO
 
-### Diretórios e permissões
+### Estrutura de arquivos e permissões
 
 @TODO
 
