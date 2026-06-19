@@ -32,7 +32,7 @@ import httpx
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, func
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 from lxml import etree
 
@@ -272,4 +272,19 @@ def rejeitar(id: int):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "env": ENV}
+    db = SessionLocal()
+
+    try:
+        db.execute(text("SELECT 1"))
+        database = "UP"
+    except:
+        database = "DOWN"
+    finally:
+        db.close()
+
+    return {
+        "status": "UP",
+        "database": database,
+        "ollama": OLLAMA_URL,
+        "environment": ENV
+    }
