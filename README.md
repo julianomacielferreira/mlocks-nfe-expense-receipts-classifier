@@ -15,8 +15,27 @@ Contadores perdem horas classificando a mesma despesa de hospedagem, software ou
 ## 🏗️ Arquitetura
 
 ```
-[Docker Compose na sua máquina]
-  ├─ fastapi (Python 3.11) → chama llama AI
-  ├─ postgres:15
-  └─ vue-dev (frontend)
+                     Docker Network
+────────────────────────────────────────────────────────────
+
+              +----------------------+
+              |      Frontend        |
+              |      nginx           |
+              +----------+-----------+
+                         |
+                         |
+              +----------v-----------+
+              |     FastAPI API      |
+              |  Uvicorn             |
+              |  Health Checks       |
+              +----------+-----------+
+                         |
+        +----------------+----------------+
+        |                                 |
++-------v--------+                +-------v--------+
+| PostgreSQL     |                | Ollama         |
+| Healthcheck    |                | Healthcheck    |
+| Persistent Vol |                | Persistent Vol |
++----------------+                +----------------+
+
 ```
