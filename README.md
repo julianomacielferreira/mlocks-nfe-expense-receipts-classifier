@@ -1,4 +1,4 @@
-## Classificador com IA generativa para despesas a partir de Nota Fiscais Eletrônicas.
+## Classificador com IA generativa para despesas a partir de Nota Fiscais Eletrônicas.  $${\color{red}[in \space progress]}$$
 
 > **Python extrai XML → FastAPI envia para LLaMA 2 → LLaMA 2 sugere categoria com justificativa → Python grava no PostgreSQL com status "sugerido" → Contador valida no Vue**
 
