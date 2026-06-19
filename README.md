@@ -14,7 +14,7 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 
 ---
 
-**Diferencial:** roda 100% em Docker na sua máquina com LLaMA 2 via Ollama.
+**Diferencial:** roda 100% em Docker na sua máquina com LLaMA 2 via **Ollama**.
 
 ## Arquitetura
 
