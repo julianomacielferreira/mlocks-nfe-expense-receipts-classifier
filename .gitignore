@@ -134,3 +134,4 @@ sa.json
 
 # Local data
 scripts/nfe/*.xml
+scripts/nfe/*.csv
