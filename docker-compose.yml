@@ -21,6 +21,11 @@ services:
     restart: unless-stopped
     networks:
       - mlocks-nferc-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   database:
     image: postgres:15-alpine
