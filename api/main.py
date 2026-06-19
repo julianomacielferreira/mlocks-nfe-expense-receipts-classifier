@@ -97,20 +97,15 @@ async def classifica_mock(dados):
 
 async def classifica_ollama(dados: dict) -> dict:
     prompt = f"""
-                Você é um classificador de despesas fiscais.
-                
-                Responda APENAS um JSON válido.
-                
-                Formato obrigatório:
-                
+                Você é um classificador de despesas fiscais.                
+                Responda APENAS um JSON válido.                
+                Formato obrigatório:                
                 {{
                   "categoria": "...",
                   "justificativa": "..."
-                }}
-                
+                }}                
                 Descrição:
-                {dados["descricao"]}
-                
+                {dados["descricao"]}                
                 Valor:
                 {dados["valor"]}
                 """
@@ -137,8 +132,6 @@ async def classifica_ollama(dados: dict) -> dict:
             resp.raise_for_status()
 
             body = resp.json()
-            print("OLLAMA RESPONSE:", body)
-
             result = json.loads(body["response"])
 
             if not isinstance(result, dict):
