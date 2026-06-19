@@ -92,7 +92,6 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 
 ## Licença
 
-@TODO
-
 FastAPI - This project is licensed under the terms of the [MIT license](https://fastapi.tiangolo.com/#license)
+
 Vue.js - The Progressive JavaScript Framework is released under the [MIT license](https://opensource.org/licenses/MIT).
