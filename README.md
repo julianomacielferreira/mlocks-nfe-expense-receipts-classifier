@@ -50,6 +50,13 @@ O **NFERC** lê o XML da NF-e, consulta o plano de contas e sugere a _categoria_
 
 ### Pré-requisitos
 
+## URLs principais
+
+#### Backend: http://localhost:8000/ 
+#### Frontend: http://localhost:5173/
+#### Swagger docs da API: http://localhost:8000/docs
+#### Ollama: http://localhost:11434
+
 @TODO
 
 ### Estrutura de arquivos e permissões
