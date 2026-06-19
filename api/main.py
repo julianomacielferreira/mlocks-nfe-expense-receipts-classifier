@@ -85,7 +85,7 @@ def extrai_dados_xml(xml_str: str) -> dict:
         ns = {"nfe": "http://www.portalfiscal.inf.br/nfe"}
         valor = root.xpath("string(//nfe:vNF)", namespaces=ns) or "0"
         descricao = root.xpath("string(//nfe:xProd)", namespaces=ns) or ""
-        print(descricao)
+
         return {"valor": valor, "descricao": descricao}
     except Exception as e:
         raise HTTPException(400, f"XML inválido: {e}")
@@ -177,7 +177,6 @@ async def classificar(req: ClassificarRequest):
 
     result = await classifier(dados)
 
-    print(result)
     if "categoria" not in result or "justificativa" not in result:
         raise HTTPException(
             500,
@@ -277,7 +276,7 @@ def health():
     try:
         db.execute(text("SELECT 1"))
         database = "UP"
-    except:
+    except Exception as e:
         database = "DOWN"
     finally:
         db.close()
