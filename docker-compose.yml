@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  api:
+    build: ./api
+    container_name: mlocks-nferc-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=${ENV:-local}
+      - PROJECT_ID=${PROJECT_ID:-mlocks-nfe-expense-receipt-analiser-dev}
+      - DATABASE_URL=postgresql://postgres:qwerty@database:5432/mlocks_nferc_db
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama2:7b}
+    volumes:
+      - ./api:/app
+      - ./sa.json:/secrets/sa.json:ro
+    depends_on:
+      - database
+      - ollama
+    restart: unless-stopped
+    networks:
+      - mlocks-nferc-network
+
+  database:
+    image: postgres:15-alpine
+    container_name: mlocks-nferc-db
+    environment:
+      POSTGRES_DB: mlocks_nferc_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - mlocks-nferc-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d mlocks_nferc_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: mlocks-nferc-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - mlocks-nferc-network
+    # Descomente para usar GPU NVIDIA
+    # deploy:
+    # resources:
+    # reservations:
+    # devices:
+    # - driver: nvidia
+    # count: 1
+    # capabilities: [gpu]
+
+  frontend:
+    image: nginx:alpine
+    container_name: mlocks-nferc-frontend
+    ports:
+      - "5173:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - mlocks-nferc-network
+
+volumes:
+  pgdata:
+    driver: local
+  ollama_data:
+    driver: local
+
+networks:
+  mlocks-nferc-network:
+    driver: bridge
