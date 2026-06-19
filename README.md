@@ -6,7 +6,7 @@ arquivos XML de NF-e (Notas Fiscais Eletrônicas) usando IA generativa (LLMs - L
 O projeto é implementado em Python e Vuejs, **rodando localmente com Docker e sem depender de cloud**. Todas as
 dependências rodam em ambiente de desenvolvimento.
 
-Em resumo o kernel do sistema faz o seguinte:
+Em resumo o sistema faz o seguinte processo:
 
 > **Python extrai XML → FastAPI envia para LLaMA 2 → LLaMA 2 sugere categoria com justificativa → Python grava no
 PostgreSQL com status "sugerido" → Usuário valida no frontend Vuejs**
