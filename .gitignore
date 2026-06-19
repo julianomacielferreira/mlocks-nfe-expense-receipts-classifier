@@ -131,3 +131,6 @@ dmypy.json
 # Pycharm
 .idea
 sa.json
+
+# Local data
+scripts/nfe/*.xml
