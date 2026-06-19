@@ -56,7 +56,15 @@ O **NFERC** lê o XML da NF-e, consulta o plano de contas e sugere a _categoria_
 
 @TODO
 
+### Importador de NFe nfe_importer.py
+
+@TODO
+
 ### Modelos do Ollama e como utilizá-los
+
+@TODO
+
+## Banco de Dados
 
 @TODO
 
