@@ -50,7 +50,9 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 
 ### Pré-requisitos
 
-## URLs principais
+@TODO
+
+### Principais URLs
 
 #### Backend: http://localhost:8000/
 
@@ -59,8 +61,6 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 #### Swagger docs da API: http://localhost:8000/docs
 
 #### Ollama: http://localhost:11434
-
-@TODO
 
 ### Estrutura de arquivos e permissões
 
