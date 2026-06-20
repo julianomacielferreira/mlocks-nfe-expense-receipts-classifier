@@ -36,7 +36,8 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, t
 from sqlalchemy.orm import declarative_base, sessionmaker
 from lxml import etree
 
-ENV = os.getenv("ENV", "local")
+ENV = os.getenv("ENV", "development")
+MODE = os.getenv("MODE", "ollama")
 PROJECT_ID = os.getenv("PROJECT_ID")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama:11434")
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:qwerty@database:5432/mlocks_nferc_db")
@@ -154,7 +155,7 @@ async def ollama_classifier(dados: dict) -> dict:
 async def classify(req: ClassificarRequest):
     dados = extract_xml_data(req.xml_nfe)
 
-    mode = req.mode if req.mode != "auto" else ENV
+    mode = req.mode if req.mode != "auto" else MODE
 
     if mode == "local": mode = "mock"
 
@@ -278,5 +279,6 @@ def health():
         "status": "UP",
         "database": database,
         "ollama": OLLAMA_URL,
+        "mode": MODE,
         "environment": ENV
     }
