@@ -72,7 +72,7 @@ async def classifica_arquivo(client: httpx.AsyncClient, file: Path, mode: str, s
 
             payload = {
                 "xml_nfe": xml_clean,
-                "modo": mode
+                "mode": mode
             }
 
             start = time.time()

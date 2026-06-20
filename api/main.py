@@ -68,7 +68,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 class ClassificarRequest(BaseModel):
     xml_nfe: str
-    modo: Literal["auto", "mock", "ollama"] = "auto"
+    mode: Literal["auto", "mock", "ollama"] = "auto"
 
 
 class ClassificarResponse(BaseModel):
@@ -154,14 +154,14 @@ async def ollama_classifier(dados: dict) -> dict:
 async def classify(req: ClassificarRequest):
     dados = extract_xml_data(req.xml_nfe)
 
-    modo = req.modo if req.modo != "auto" else ENV
+    mode = req.mode if req.mode != "auto" else ENV
 
-    if modo == "local": modo = "mock"
+    if mode == "local": mode = "mock"
 
     classifier = {
         "mock": mock_classifier,
         "ollama": ollama_classifier,
-    }.get(modo)
+    }.get(mode)
 
     if classifier is None:
         raise HTTPException(
@@ -186,7 +186,7 @@ async def classify(req: ClassificarRequest):
             ).hexdigest(),
             categoria=result["categoria"],
             justificativa=result["justificativa"],
-            origem=modo,
+            origem=mode,
             valor=dados["valor"],
             descricao=dados["descricao"]
         )
@@ -197,7 +197,7 @@ async def classify(req: ClassificarRequest):
     finally:
         db.close()
 
-    return {**result, "id": reg.id, "origem": modo, "status": "sugerido"}
+    return {**result, "id": reg.id, "origem": mode, "status": "sugerido"}
 
 
 @app.get("/classificacoes")
@@ -206,7 +206,8 @@ def list_classifications(status: Optional[str] = None, page: int = Query(1, ge=1
 
     query = db.query(Classificacao)
 
-    if status: query = query.filter(Classificacao.status == status)
+    if status:
+        query = query.filter(Classificacao.status == status)
 
     total = query.count()
 
