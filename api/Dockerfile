@@ -10,7 +10,7 @@ WORKDIR /app
 # --no-install-recommends = não instala pacotes extras desnecessários
 # rm -rf = limpa cache do apt para manter imagem pequena
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc libpq-dev && \
+    apt-get install -y --no-install-recommends gcc libpq-dev curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Copia SÓ o requirements primeiro (otimização de cache Docker)
