@@ -16,8 +16,10 @@ services:
       - ./api:/app
       - ./sa.json:/secrets/sa.json:ro
     depends_on:
-      - database
-      - ollama
+      database:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - mlocks-nferc-network
@@ -57,6 +59,11 @@ services:
     restart: unless-stopped
     networks:
       - mlocks-nferc-network
+    healthcheck:
+      test: [ "CMD", "ollama", "list" ]
+      interval: 20s
+      retries: 10
+      timeout: 10s
     # Descomente para usar GPU NVIDIA
     # deploy:
     # resources:
