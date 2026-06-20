@@ -48,6 +48,17 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 
 @TODO
 
+```bash
+# 1. subir tudo
+$ docker compose up -d
+```
+
+### Como instalar o modelo no ollama
+```bash
+# 2. baixar modelo local (só primeira vez)
+$ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
+```
+
 ### Pré-requisitos
 
 @TODO
@@ -69,6 +80,10 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 ### Importador de NFe nfe_importer.py
 
 @TODO
+
+```bash
+$ python3 api/nfe_importer.py ./scripts/nfe/ --mode ollama --workers 5
+```
 
 ### Modelos do Ollama e como utilizá-los
 
