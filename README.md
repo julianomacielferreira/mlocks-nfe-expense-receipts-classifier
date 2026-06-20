@@ -50,7 +50,12 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 
 ```bash
 # 1. subir tudo
-$ docker compose up -d
+$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
+```
+
+```bash
+# 1. subir tudo
+$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
 ### Como instalar o modelo no ollama
