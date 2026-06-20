@@ -31,6 +31,7 @@ from use_cases.classify_file import ClassifyFileUseCase
 from use_cases.classify_batch import ClassifyBatchUseCase
 from infrastructure.csv_reporter import CSVReporter
 from infrastructure.file_repository import list_xml_files
+from utils.execution_timer import ExecutionTimer
 
 """
 main.py - Classificador em batch de NF-e
@@ -41,6 +42,8 @@ Gera CSV com o resultado para auditoria
 Uso:
     python api/nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 5
 """
+
+
 async def main():
     p = argparse.ArgumentParser()
     p.add_argument("dir")
@@ -51,6 +54,8 @@ async def main():
     directory = Path(args.dir)
     files = list_xml_files(directory)
 
+    timer = ExecutionTimer()
+
     async with httpx.AsyncClient() as client:
         api = HttpClassifier(client)
         classifier = ClassifierFactory.create(args.mode, api)
@@ -58,10 +63,13 @@ async def main():
         file_uc = ClassifyFileUseCase(parser, classifier)
         batch_uc = ClassifyBatchUseCase(file_uc, args.workers)
 
-        results = await batch_uc.execute(files, args.mode)
+        with timer:
+            results = await batch_uc.execute(files, args.mode)
 
     csv_path = CSVReporter().write(results, directory)
     print(f"\nCSV salvo em: {csv_path}")
+    print(f"Tempo total: {timer.elapsed:.2f}s")  # ou timer.total, depende da sua classe
+    print(f"Média por arquivo: {timer.elapsed / len(results):.2f}s")
 
 
 if __name__ == "__main__":
