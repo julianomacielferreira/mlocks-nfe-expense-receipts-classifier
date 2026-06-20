@@ -39,7 +39,7 @@ from lxml import etree
 ENV = os.getenv("ENV", "local")
 PROJECT_ID = os.getenv("PROJECT_ID")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama:11434")
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:qwerty@database:5432/mlocks_nferc_db")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
@@ -62,7 +62,7 @@ class Classificacao(Base):
 
 Base.metadata.create_all(engine)
 
-app = FastAPI(title="Classificador com IA generativa para despesas a partir de Nota Fiscais Eletrônicas.")
+app = FastAPI(title="NFERC - Classificador de despesas a partir de Nota Fiscais Eletrônicas com IA generativa (LLM).")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
@@ -79,7 +79,7 @@ class ClassificarResponse(BaseModel):
     status: str
 
 
-def extrai_dados_xml(xml_str: str) -> dict:
+def extract_xml_data(xml_str: str) -> dict:
     try:
         root = etree.fromstring(xml_str.encode())
         ns = {"nfe": "http://www.portalfiscal.inf.br/nfe"}
@@ -87,15 +87,16 @@ def extrai_dados_xml(xml_str: str) -> dict:
         descricao = root.xpath("string(//nfe:xProd)", namespaces=ns) or ""
 
         return {"valor": valor, "descricao": descricao}
+
     except Exception as e:
         raise HTTPException(400, f"XML inválido: {e}")
 
 
-async def classifica_mock(dados):
-    return {"categoria": "6.2.01 - Servicos TI", "justificativa": f"Mock valor R${dados['valor']}"}
+async def mock_classifier(dados):
+    return {"categoria": "6.2.01 - Desenvolvimento de Software", "justificativa": f"Mock valor R${dados['valor']}"}
 
 
-async def classifica_ollama(dados: dict) -> dict:
+async def ollama_classifier(dados: dict) -> dict:
     prompt = f"""
                 Você é um classificador de despesas fiscais.                
                 Responda APENAS um JSON válido.                
@@ -112,7 +113,7 @@ async def classifica_ollama(dados: dict) -> dict:
 
     try:
         async with httpx.AsyncClient(timeout=60) as client:
-            resp = await client.post(
+            response = await client.post(
                 f"{OLLAMA_URL}/api/generate",
                 json={
                     "model": "gemma2:2b",
@@ -129,9 +130,9 @@ async def classifica_ollama(dados: dict) -> dict:
                 }
             )
 
-            resp.raise_for_status()
+            response.raise_for_status()
 
-            body = resp.json()
+            body = response.json()
             result = json.loads(body["response"])
 
             if not isinstance(result, dict):
@@ -150,16 +151,16 @@ async def classifica_ollama(dados: dict) -> dict:
 
 
 @app.post("/classificar", response_model=ClassificarResponse)
-async def classificar(req: ClassificarRequest):
-    dados = extrai_dados_xml(req.xml_nfe)
+async def classify(req: ClassificarRequest):
+    dados = extract_xml_data(req.xml_nfe)
 
     modo = req.modo if req.modo != "auto" else ENV
 
     if modo == "local": modo = "mock"
 
     classifier = {
-        "mock": classifica_mock,
-        "ollama": classifica_ollama,
+        "mock": mock_classifier,
+        "ollama": ollama_classifier,
     }.get(modo)
 
     if classifier is None:
@@ -191,9 +192,7 @@ async def classificar(req: ClassificarRequest):
         )
 
         db.add(reg)
-
         db.commit()
-
         db.refresh(reg)
     finally:
         db.close()
@@ -202,7 +201,7 @@ async def classificar(req: ClassificarRequest):
 
 
 @app.get("/classificacoes")
-def listar(status: Optional[str] = None, page: int = Query(1, ge=1), limit: int = Query(10, le=100)):
+def list_classifications(status: Optional[str] = None, page: int = Query(1, ge=1), limit: int = Query(10, le=100)):
     db = SessionLocal()
 
     query = db.query(Classificacao)
@@ -229,34 +228,34 @@ def listar(status: Optional[str] = None, page: int = Query(1, ge=1), limit: int 
 
 
 @app.post("/classificacoes/{id}/aprovar")
-def aprovar(id: int):
+def approve_classification(id: int):
     db = SessionLocal()
 
-    reg = db.query(Classificacao).get(id)
+    classification = db.query(Classificacao).get(id)
 
-    if not reg: raise HTTPException(404, "Não encontrado")
+    if not classification:
+        raise HTTPException(404, "Não encontrado")
 
-    reg.status = "aprovado"
+    classification.status = "aprovado"
 
     db.commit()
-
     db.close()
 
     return {"ok": True}
 
 
 @app.post("/classificacoes/{id}/rejeitar")
-def rejeitar(id: int):
+def reject_classification(id: int):
     db = SessionLocal()
 
-    reg = db.query(Classificacao).get(id)
+    classification = db.query(Classificacao).get(id)
 
-    if not reg: raise HTTPException(404, "Não encontrado")
+    if not classification:
+        raise HTTPException(404, "Não encontrado")
 
-    reg.status = "rejeitado"
+    classification.status = "rejeitado"
 
     db.commit()
-
     db.close()
 
     return {"ok": True}
