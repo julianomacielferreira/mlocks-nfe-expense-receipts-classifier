@@ -87,7 +87,19 @@ $ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
 @TODO
 
 ```bash
-$ python3 api/nfe_importer.py ./nfe_files/ --mode ollama --workers
+$ python3 api/nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 5
+```
+
+A saída seria algo como:
+
+```
+Encontrados 6 XMLs
+✅ [1/6] nfe6271606493106188290.xml -> Eletrônicos
+✅ [2/6] nota_500418-100.xml -> Despesas com Serviços
+✅ [3/6] NFe42251238181833000179550010000068791673229235-nfe.xml -> Equipamento de Oficina
+✅ [4/6] 42260300718661000157550010012017901706151365.xml -> Material de construção
+✅ [5/6] 42250644004468000120550010000006461043157399-procNFe.xml -> Manutenção e Reparo de Equipamentos
+✅ [6/6] 42251144004468000120550010000012011178847429-procNFe.xml -> Roupas e Acessórios
 ```
 
 ### Modelos do Ollama e como utilizá-los
