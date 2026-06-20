@@ -46,7 +46,7 @@ API_URL = "http://localhost:8000/classificar"
 TIMEOUT = 120  # LLaMa 2 pode demorar
 
 
-def extrai_preview(xml_str: str) -> dict:
+def extrac_preview(xml_str: str) -> dict:
     """Extrai valor e descrição sem depender da API"""
     try:
         root = etree.fromstring(xml_str.encode())
@@ -59,7 +59,7 @@ def extrai_preview(xml_str: str) -> dict:
         return {"valor": 0, "descricao": "ERROR_PARSE"}
 
 
-async def classifica_arquivo(client: httpx.AsyncClient, file: Path, mode: str, semaphore: asyncio.Semaphore):
+async def classify_file(client: httpx.AsyncClient, file: Path, mode: str, semaphore: asyncio.Semaphore):
     """Envia um XML para a API"""
     async with semaphore:  # controla concorrência
         try:
@@ -68,7 +68,7 @@ async def classifica_arquivo(client: httpx.AsyncClient, file: Path, mode: str, s
             # Remove quebras para JSON limpo
             xml_clean = " ".join(xml_content.split())
 
-            preview = extrai_preview(xml_content)
+            preview = extrac_preview(xml_content)
 
             payload = {
                 "xml_nfe": xml_clean,
@@ -146,7 +146,7 @@ async def main():
     results = []
 
     async with httpx.AsyncClient() as client:
-        tasks = [classifica_arquivo(client, file, args.mode, semaphore) for file in files]
+        tasks = [classify_file(client, file, args.mode, semaphore) for file in files]
 
         for i, request in enumerate(asyncio.as_completed(tasks), 1):
             result = await request
