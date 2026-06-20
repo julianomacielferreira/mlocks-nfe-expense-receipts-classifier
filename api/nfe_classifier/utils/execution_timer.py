@@ -21,3 +21,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+import time
+from contextlib import AbstractContextManager
+
+
+class ExecutionTimer(AbstractContextManager):
+
+    def __init__(self):
+        self._start = 0.0
+        self._end = 0.0
+
+    def __enter__(self):
+        self._start = time.perf_counter()
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self._end = time.perf_counter()
+
+    @property
+    def elapsed(self) -> float:
+        end = self._end or time.perf_counter()
+        return end - self._start
