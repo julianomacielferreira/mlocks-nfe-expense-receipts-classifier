@@ -29,7 +29,7 @@ Lê todos os .xml de uma pasta e envia para /classificar
 Gera CSV com o resultado para auditoria
 
 Uso:
-    python ./scripts/nfe/nfe_importer.py ./scripts/nfe/ --mode ollama --workers 10
+    python api/nfe_importer.py ./scripts/nfe/ --mode ollama --workers 10
 """
 import argparse
 import asyncio
