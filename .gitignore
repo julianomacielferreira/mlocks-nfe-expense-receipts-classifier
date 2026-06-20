@@ -133,5 +133,5 @@ dmypy.json
 sa.json
 
 # Local data
-scripts/nfe/*.xml
-scripts/nfe/*.csv
+nfe_files/*.xml
+nfe_files/*.csv

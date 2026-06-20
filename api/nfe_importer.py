@@ -29,7 +29,7 @@ Lê todos os .xml de uma pasta e envia para /classificar
 Gera CSV com o resultado para auditoria
 
 Uso:
-    python api/nfe_importer.py ./scripts/nfe/ --mode ollama --workers 10
+    python api/nfe_importer.py ./nfe_files/ --mode ollama --workers 10
 """
 import argparse
 import asyncio
@@ -50,9 +50,9 @@ def extrai_preview(xml_str: str) -> dict:
     """Extrai valor e descrição sem depender da API"""
     try:
         root = etree.fromstring(xml_str.encode())
-        ns = {"nfe": "http://www.portalfiscal.inf.br/nfe"}
-        valor = root.xpath("string(//nfe:vNF)", namespaces=ns) or "0"
-        descricao = root.xpath("string(//nfe:xProd)", namespaces=ns) or ""
+        ns = {"nfe_files": "http://www.portalfiscal.inf.br/nfe"}
+        valor = root.xpath("string(//nfe_files:vNF)", namespaces=ns) or "0"
+        descricao = root.xpath("string(//nfe_files:xProd)", namespaces=ns) or ""
 
         return {"valor": valor, "descricao": descricao[:80]}
     except:

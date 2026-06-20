@@ -87,7 +87,7 @@ $ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
 @TODO
 
 ```bash
-$ python3 api/nfe_importer.py ./scripts/nfe/ --mode ollama --workers 5
+$ python3 api/nfe_importer.py ./nfe_files/ --mode ollama --workers
 ```
 
 ### Modelos do Ollama e como utilizá-los

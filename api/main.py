@@ -83,9 +83,9 @@ class ClassificarResponse(BaseModel):
 def extract_xml_data(xml_str: str) -> dict:
     try:
         root = etree.fromstring(xml_str.encode())
-        ns = {"nfe": "http://www.portalfiscal.inf.br/nfe"}
-        valor = root.xpath("string(//nfe:vNF)", namespaces=ns) or "0"
-        descricao = root.xpath("string(//nfe:xProd)", namespaces=ns) or ""
+        ns = {"nfe_files": "http://www.portalfiscal.inf.br/nfe"}
+        valor = root.xpath("string(//nfe_files:vNF)", namespaces=ns) or "0"
+        descricao = root.xpath("string(//nfe_files:xProd)", namespaces=ns) or ""
 
         return {"valor": valor, "descricao": descricao}
 
