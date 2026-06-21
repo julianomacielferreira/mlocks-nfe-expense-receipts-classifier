@@ -78,9 +78,51 @@ $ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
 
 #### Ollama: http://localhost:11434
 
-### Estrutura de arquivos e permissões
+### Estrutura de arquivos do Projeto
 
-@TODO
+```
+.
+├── api
+│   ├── Dockerfile
+│   ├── main.py
+│   ├── nfe_classifier
+│   │   ├── classifiers
+│   │   │   ├── classify_batch.py
+│   │   │   ├── classify_file.py
+│   │   │   └── __init__.py
+│   │   ├── config.py
+│   │   ├── infrastructure
+│   │   │   ├── csv_reporter.py
+│   │   │   ├── file_repository.py
+│   │   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   ├── interfaces.py
+│   │   ├── main.py
+│   │   ├── models.py
+│   │   ├── services
+│   │   │   ├── api_client.py
+│   │   │   ├── classifiers.py
+│   │   │   ├── __init__.py
+│   │   │   └── nfe_xml_extractor.py
+│   │   └── utils
+│   │       ├── execution_timer.py
+│   │       └── __init__.py
+│   └── requirements.txt
+├── docker-compose.dev.yml
+├── docker-compose.yml
+├── .env.example
+├── frontend
+│   └── index.html
+├── .gitignore
+├── LICENSE
+├── nfe_files
+├── README.md
+└── scripts
+    ├── init_db.py
+    └── init_db.sql
+
+9 directories, 29 files
+```
 
 ### Importador de NFe nfe_importer.py
 
