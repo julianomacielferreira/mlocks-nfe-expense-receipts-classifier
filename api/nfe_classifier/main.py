@@ -27,8 +27,8 @@ import httpx
 from services.nfe_xml_extractor import NfeXMLExtractor
 from services.api_client import HttpClassifier
 from services.classifiers import ClassifierFactory
-from use_cases.classify_file import ClassifyFileUseCase
-from use_cases.classify_batch import ClassifyBatchUseCase
+from classifiers import ClassifyFileUseCase
+from classifiers import ClassifyBatchUseCase
 from infrastructure.csv_reporter import CSVReporter
 from infrastructure.file_repository import list_xml_files
 from utils.execution_timer import ExecutionTimer
@@ -40,7 +40,7 @@ Lê todos os .xml de uma pasta e envia para /classificar
 Gera CSV com o resultado para auditoria
 
 Uso:
-    python api/nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 5
+    python classifier/nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 5
 """
 
 

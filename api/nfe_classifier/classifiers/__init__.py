@@ -21,25 +21,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-import asyncio
-from pathlib import Path
-from use_cases.classify_file import ClassifyFileUseCase
-
-
-class ClassifyBatchUseCase:
-    def __init__(self, use_case: ClassifyFileUseCase, workers: int):
-        self.use_case = use_case
-        self.semaphore = asyncio.Semaphore(workers)
-
-    async def execute(self, files: list[Path], mode: str):
-        async def with_limit(f):
-            async with self.semaphore:
-                return await self.use_case.execute(f, mode)
-
-        tasks = [with_limit(f) for f in files]
-        results = []
-        for i, coro in enumerate(asyncio.as_completed(tasks), 1):
-            res = await coro
-            print(f"{'✅' if res.status == 'sugerido' else '❌'} [{i}/{len(files)}] {res.arquivo} -> {res.categoria}")
-            results.append(res)
-        return results
+from .classify_batch import ClassifyBatchUseCase
+from .classify_file import ClassifyFileUseCase
