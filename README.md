@@ -99,28 +99,6 @@ $ docker exec -it mlocks-nferc-ollama ollama run llama3.2
 ├── api
 │   ├── Dockerfile
 │   ├── main.py
-│   ├── nfe_classifier
-│   │   ├── classifiers
-│   │   │   ├── classify_batch.py
-│   │   │   ├── classify_file.py
-│   │   │   └── __init__.py
-│   │   ├── config.py
-│   │   ├── infrastructure
-│   │   │   ├── csv_reporter.py
-│   │   │   ├── file_repository.py
-│   │   │   └── __init__.py
-│   │   ├── __init__.py
-│   │   ├── interfaces.py
-│   │   ├── main.py
-│   │   ├── models.py
-│   │   ├── services
-│   │   │   ├── api_client.py
-│   │   │   ├── classifiers.py
-│   │   │   ├── __init__.py
-│   │   │   └── nfe_xml_extractor.py
-│   │   └── utils
-│   │       ├── execution_timer.py
-│   │       └── __init__.py
 │   └── requirements.txt
 ├── docker-compose.dev.yml
 ├── docker-compose.yml
@@ -129,6 +107,28 @@ $ docker exec -it mlocks-nferc-ollama ollama run llama3.2
 │   └── index.html
 ├── .gitignore
 ├── LICENSE
+├── nfe_classifier
+│   ├── classifiers
+│   │   ├── batch_classifier.py
+│   │   ├── file_classifier.py
+│   │   └── __init__.py
+│   ├── config.py
+│   ├── infrastructure
+│   │   ├── csv_reporter.py
+│   │   ├── file_repository.py
+│   │   └── __init__.py
+│   ├── __init__.py
+│   ├── interfaces.py
+│   ├── main.py
+│   ├── models.py
+│   ├── services
+│   │   ├── api_client.py
+│   │   ├── classifiers.py
+│   │   ├── __init__.py
+│   │   └── nfe_xml_extractor.py
+│   └── utils
+│       ├── execution_timer.py
+│       └── __init__.py
 ├── nfe_files
 ├── README.md
 └── scripts
@@ -146,7 +146,7 @@ Para utilizá-lo, salve seus arquivos xml dentro do diretório `./nfe_files/` e 
 com o parâmetro `--workers {número-de-workers}` para controlar o paralelismo:
 
 ```bash
-$ python3 api/nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 2
+$ python3 nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 2
 ```
 
 A saída seria algo como:
