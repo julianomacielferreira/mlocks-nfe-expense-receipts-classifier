@@ -223,8 +223,17 @@ async def ollama_classifier(dados: dict) -> dict:
             detail=f"Unexpected error: {repr(ex)}"
         )
 
-    response.raise_for_status()
+    try:
+        response.raise_for_status()
+    except httpx.HTTPStatusError as ex:
+        logger.exception("Ollama returned HTTP error")
+        logger.error("Body: %s", response.text)
 
+        raise HTTPException(
+            status_code=502,
+            detail=response.text
+        )
+    
     try:
         body = response.json()
     except Exception:
