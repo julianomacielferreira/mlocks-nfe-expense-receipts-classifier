@@ -44,29 +44,37 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 
 ```
 
-## Como inicializar o Sistema
+## Como inicializar o Projeto
 
-@TODO
+Siga os seguintes passos para configurar e iniciar o projeto.
+
+### Configuração do arquivo .ENV
+
+Renomeie o arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example) em `backend/.env.example` para **.env**
+
+### Pré-requisitos
+
+É necessário ter instalados o **[Docker](https://docs.docker.com/install/)** e **[Docker Compose](https://docs.docker.com/compose/install/)** em sua máquina.
+
+### Subir o container docker
+
+Execute os seguintes comandos para fazer o build, subir seus containers e fazer o download do modelo no ollama (LLM local):
 
 ```bash
-# 1. subir tudo
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
 ```
 
 ```bash
-# 1. subir tudo
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
-### Como instalar o modelo no ollama
 ```bash
-# 2. baixar modelo local (só primeira vez)
-$ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
+$ docker exec -it mlocks-nferc-ollama ollama pull llama3.2
 ```
 
-### Pré-requisitos
-
-@TODO
+```bash
+$ docker exec -it mlocks-nferc-ollama ollama run llama3.2
+```
 
 ### Principais URLs
 
@@ -164,7 +172,9 @@ Encontrados 6 XMLs
 
 @TODO
 
-## Licença
+## License
+
+freeCodeCamp YouTube Channel - [Ollama Course – Build AI Apps Locally](https://www.youtube.com/watch?v=GWB9ApTPTv4)
 
 FastAPI - This project is licensed under the terms of the [MIT license](https://fastapi.tiangolo.com/#license)
 
