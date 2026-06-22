@@ -23,13 +23,14 @@ THE SOFTWARE.
 """
 import os
 import json
-
-from datetime import datetime
-from typing import Literal, Optional
-
 import hashlib
 import httpx
 import uuid
+import logging
+import traceback
+
+from datetime import datetime
+from typing import Literal, Optional
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -41,6 +42,8 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from qdrant_client.models import PointStruct
 from lxml import etree
+
+logger = logging.getLogger(__name__)
 
 ENV = os.getenv("ENV", "development")
 MODE = os.getenv("MODE", "ollama")
@@ -110,7 +113,7 @@ def extract_xml_data(xml_str: str) -> dict:
         return {"valor": valor, "descricao": descricao}
 
     except Exception as e:
-        raise HTTPException(400, f"XML inválido: {e}")
+        raise HTTPException(400, f"XML invalid: {e}")
 
 
 async def get_rag_context(descricao: str, limit: int = 3) -> str:
@@ -136,8 +139,8 @@ async def get_rag_context(descricao: str, limit: int = 3) -> str:
 
         return "\n".join(context_parts)
     except Exception as ex:
-        print(f"Erro ao buscar contexto no Qdrant: {ex}")
-        return "Erro ao recuperar histórico."
+        print(f"Error trying to search context on Qdrant: {ex}")
+        return "Error when recovering historical context."
 
 
 async def mock_classifier(dados):
@@ -145,12 +148,16 @@ async def mock_classifier(dados):
 
 
 async def ollama_classifier(dados: dict) -> dict:
-    contexto_historico = await get_rag_context(dados["descricao"])
+    try:
+        historical_context = await get_rag_context(dados["descricao"])
+    except Exception:
+        logger.exception("RAG failed")
+        raise
 
     prompt = f"""
                 Você é um classificador de despesas fiscais. Use o histórico de classificações anteriores como base para a sua decisão.            
                 [HISTÓRICO DE DESPESAS SIMILARES APROVADAS]
-                {contexto_historico}
+                {historical_context}
                 
                 [DADOS DA NOTA ATUAL]
                 Descrição: {dados["descricao"]}
@@ -163,9 +170,15 @@ async def ollama_classifier(dados: dict) -> dict:
                   "justificativa": "..."
                 }}
                 """
-
     try:
-        async with httpx.AsyncClient(timeout=60) as client:
+        timeout = httpx.Timeout(
+            connect=10,
+            read=300,
+            write=30,
+            pool=30,
+        )
+
+        async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(
                 f"{OLLAMA_URL}/api/generate",
                 json={
@@ -182,25 +195,31 @@ async def ollama_classifier(dados: dict) -> dict:
                     }
                 }
             )
+    except Exception:
+        logger.exception("HTTP request to Ollama failed")
+        raise
 
-            response.raise_for_status()
+    response.raise_for_status()
 
-            body = response.json()
-            result = json.loads(body["response"])
+    try:
+        body = response.json()
+    except Exception:
+        logger.exception("Invalid HTTP JSON")
+        raise
 
-            if not isinstance(result, dict):
-                raise ValueError("Resposta não é um objeto JSON")
+    try:
+        result = json.loads(body["response"])
 
-            if "categoria" not in result or "justificativa" not in result:
-                raise ValueError(f"JSON inválido: {result}")
+        if not isinstance(result, dict):
+            raise ValueError("Response is not a JSON object")
 
-            return result
+        if "categoria" not in result or "justificativa" not in result:
+            raise ValueError(f"JSON invalid: {result}")
+    except Exception:
+        logger.exception("LLM JSON parsing failed")
+        raise
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Erro ao classificar via Ollama: {e}"
-        )
+    return result
 
 
 @app.post("/classificar", response_model=ClassificarResponse)
@@ -219,7 +238,7 @@ async def classify(req: ClassificarRequest):
     if classifier is None:
         raise HTTPException(
             400,
-            "Modo inválido"
+            "Invalid mode"
         )
 
     result = await classifier(dados)
@@ -227,7 +246,7 @@ async def classify(req: ClassificarRequest):
     if "categoria" not in result or "justificativa" not in result:
         raise HTTPException(
             500,
-            f"Ollama retornou JSON inválido: {result}"
+            f"Ollama returned invalid JSON: {result}"
         )
 
     db = SessionLocal()
@@ -287,17 +306,17 @@ def approve_classification(id: int):
     classification = db.query(Classificacao).get(id)
 
     if not classification:
-        raise HTTPException(404, "Não encontrado")
+        raise HTTPException(404, "Not found")
 
     classification.status = "aprovado"
 
     db.commit()
 
     try:
-        texto_para_vetorizar = f"Produto: {classification.descricao}. Justificativa: {classification.justificativa}"
+        text_to_vectorize = f"Produto: {classification.descricao}. Justificativa: {classification.justificativa}"
 
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-        chunks = text_splitter.split_text(texto_para_vetorizar)
+        chunks = text_splitter.split_text(text_to_vectorize)
 
         points = []
         for chunk in chunks:
@@ -317,8 +336,8 @@ def approve_classification(id: int):
             collection_name=COLLECTION_NAME,
             points=points
         )
-    except Exception as e:
-        print(f"Erro ao salvar no Qdrant: {e}")
+    except Exception as ex:
+        print(f"Error trying to save in Qdrant: {ex}")
 
     db.close()
 
@@ -332,7 +351,7 @@ def reject_classification(id: int):
     classification = db.query(Classificacao).get(id)
 
     if not classification:
-        raise HTTPException(404, "Não encontrado")
+        raise HTTPException(404, "Not found")
 
     classification.status = "rejeitado"
 
