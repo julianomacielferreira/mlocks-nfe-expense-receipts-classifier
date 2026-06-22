@@ -38,22 +38,28 @@ class ClassifyFileUseCase:
         preview = self.parser.extract_preview(xml)
 
         start = time.time()
+
         try:
-            data = await self.classifier.classify(xml_clean, mode)
+            response = await self.classifier.classify(xml_clean, mode)
+
             return ClassificationResult(
                 arquivo=file.name,
-                id=data.get("id", ""),
-                categoria=data.get("categoria", ""),
-                justificativa=data.get("justificativa", ""),
-                origem=data.get("origem", mode),
-                status=data.get("status", ""),
+                id=response.get("id", ""),
+                categoria=response.get("categoria", ""),
+                justificativa=response.get("justificativa", ""),
+                origem=response.get("origem", mode),
+                status=response.get("status", ""),
                 valor_xml=preview.valor,
                 descricao_xml=preview.descricao,
                 tempo_seg=round(time.time() - start, 2)
             )
         except Exception as e:
             return ClassificationResult(
-                arquivo=file.name, origem=mode, status="erro",
-                valor_xml=preview.valor, descricao_xml=preview.descricao,
-                tempo_seg=round(time.time() - start, 2), erro=str(e)[:200]
+                arquivo=file.name,
+                origem=mode,
+                status="erro",
+                valor_xml=preview.valor,
+                descricao_xml=preview.descricao,
+                tempo_seg=round(time.time() - start, 2),
+                erro=str(e)[:200]
             )

@@ -27,14 +27,14 @@ from classifiers.classify_file import ClassifyFileUseCase
 
 
 class ClassifyBatchUseCase:
-    def __init__(self, use_case: ClassifyFileUseCase, workers: int):
-        self.use_case = use_case
+    def __init__(self, classifier: ClassifyFileUseCase, workers: int):
+        self.classifier = classifier
         self.semaphore = asyncio.Semaphore(workers)
 
     async def execute(self, files: list[Path], mode: str):
         async def with_limit(f):
             async with self.semaphore:
-                return await self.use_case.execute(f, mode)
+                return await self.classifier.execute(f, mode)
 
         tasks = [with_limit(f) for f in files]
         results = []
