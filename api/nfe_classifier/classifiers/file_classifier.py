@@ -27,7 +27,7 @@ from interfaces import XmlParser, Classifier
 from models import ClassificationResult
 
 
-class ClassifyFileUseCase:
+class FileClassifier:
     def __init__(self, parser: XmlParser, classifier: Classifier):
         self.parser = parser
         self.classifier = classifier

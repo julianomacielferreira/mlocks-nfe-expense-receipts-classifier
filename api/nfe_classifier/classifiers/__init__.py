@@ -21,5 +21,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-from .classify_batch import ClassifyBatchUseCase
-from .classify_file import ClassifyFileUseCase
+from .batch_classifier import BatchClassifier
+from .file_classifier import FileClassifier

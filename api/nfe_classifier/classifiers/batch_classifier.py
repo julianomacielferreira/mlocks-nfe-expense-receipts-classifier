@@ -23,11 +23,11 @@ THE SOFTWARE.
 """
 import asyncio
 from pathlib import Path
-from classifiers.classify_file import ClassifyFileUseCase
+from classifiers.file_classifier import FileClassifier
 
 
-class ClassifyBatchUseCase:
-    def __init__(self, classifier: ClassifyFileUseCase, workers: int):
+class BatchClassifier:
+    def __init__(self, classifier: FileClassifier, workers: int):
         self.classifier = classifier
         self.semaphore = asyncio.Semaphore(workers)
 

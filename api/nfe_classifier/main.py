@@ -27,8 +27,8 @@ import httpx
 from services.nfe_xml_extractor import NfeXMLExtractor
 from services.api_client import HttpClassifier
 from services.classifiers import ClassifierFactory
-from classifiers import ClassifyFileUseCase
-from classifiers import ClassifyBatchUseCase
+from classifiers import FileClassifier
+from classifiers import BatchClassifier
 from infrastructure.csv_reporter import CSVReporter
 from infrastructure.file_repository import list_xml_files
 from utils.execution_timer import ExecutionTimer
@@ -60,8 +60,8 @@ async def main():
         api = HttpClassifier(client)
         classifier = ClassifierFactory.create(args.mode, api)
         parser = NfeXMLExtractor()
-        file_uc = ClassifyFileUseCase(parser, classifier)
-        batch_uc = ClassifyBatchUseCase(file_uc, args.workers)
+        file_uc = FileClassifier(parser, classifier)
+        batch_uc = BatchClassifier(file_uc, args.workers)
 
         with timer:
             results = await batch_uc.execute(files, args.mode)
