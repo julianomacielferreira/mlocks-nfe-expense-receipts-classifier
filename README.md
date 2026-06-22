@@ -69,7 +69,7 @@ $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
 ```bash
-$ docker exec -it mlocks-nferc-ollama ollama pull llama3.2
+$ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
 ```
 
 Para validar se o modelo foi baixado corretamente e interagir via _prompt_, execute o seguinte comando:
