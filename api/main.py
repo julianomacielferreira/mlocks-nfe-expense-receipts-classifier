@@ -29,11 +29,17 @@ from typing import Literal, Optional
 
 import hashlib
 import httpx
+import uuid
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, text
 from sqlalchemy.orm import declarative_base, sessionmaker
+from qdrant_client import QdrantClient
+from qdrant_client.models import VectorParams, Distance
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from qdrant_client.models import PointStruct
 from lxml import etree
 
 ENV = os.getenv("ENV", "development")
@@ -41,10 +47,24 @@ MODE = os.getenv("MODE", "ollama")
 PROJECT_ID = os.getenv("PROJECT_ID")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama:11434")
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:qwerty@database:5432/mlocks_nferc_db")
+QDRANT_URL = os.getenv("QDRANT_URL", "http://qdrant:6333")
+COLLECTION_NAME = "nferc_classificacoes"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
+
+qdrant_client = QdrantClient(url=QDRANT_URL)
+embeddings = OllamaEmbeddings(model="nomic-embed-text", base_url=OLLAMA_URL)
+
+try:
+    if not qdrant_client.collection_exists(COLLECTION_NAME):
+        qdrant_client.create_collection(
+            collection_name=COLLECTION_NAME,
+            vectors_config=VectorParams(size=768, distance=Distance.COSINE),  # nomic-embed-text uses 768 dimensions
+        )
+except Exception as e:
+    print(f"Warning: Could not initialize Qdrant collection: {e}")
 
 
 class Classificacao(Base):
@@ -93,23 +113,55 @@ def extract_xml_data(xml_str: str) -> dict:
         raise HTTPException(400, f"XML inválido: {e}")
 
 
+async def get_rag_context(descricao: str, limit: int = 3) -> str:
+    try:
+
+        query_vector = embeddings.embed_query(descricao)
+
+        search_result = qdrant_client.search(
+            collection_name=COLLECTION_NAME,
+            query_vector=query_vector,
+            limit=limit
+        )
+
+        if not search_result:
+            return "Nenhum histórico similar encontrado."
+
+        context_parts = []
+        for hit in search_result:
+            payload = hit.payload
+            context_parts.append(
+                f"- Produto: {payload.get('descricao')} | Categoria Aprovada: {payload.get('categoria')}"
+            )
+
+        return "\n".join(context_parts)
+    except Exception as ex:
+        print(f"Erro ao buscar contexto no Qdrant: {ex}")
+        return "Erro ao recuperar histórico."
+
+
 async def mock_classifier(dados):
     return {"categoria": "6.2.01 - Desenvolvimento de Software", "justificativa": f"Mock valor R${dados['valor']}"}
 
 
 async def ollama_classifier(dados: dict) -> dict:
+    contexto_historico = await get_rag_context(dados["descricao"])
+
     prompt = f"""
-                Você é um classificador de despesas fiscais.                
-                Responda APENAS um JSON válido.                
-                Formato obrigatório:                
+                Você é um classificador de despesas fiscais. Use o histórico de classificações anteriores como base para a sua decisão.            
+                [HISTÓRICO DE DESPESAS SIMILARES APROVADAS]
+                {contexto_historico}
+                
+                [DADOS DA NOTA ATUAL]
+                Descrição: {dados["descricao"]}
+                Valor: {dados["valor"]}
+                
+                Responda APENAS um JSON válido.
+                Formato obrigatório:
                 {{
                   "categoria": "...",
                   "justificativa": "..."
-                }}                
-                Descrição:
-                {dados["descricao"]}                
-                Valor:
-                {dados["valor"]}
+                }}
                 """
 
     try:
@@ -232,7 +284,6 @@ def list_classifications(status: Optional[str] = None, page: int = Query(1, ge=1
 @app.post("/classificacoes/{id}/aprovar")
 def approve_classification(id: int):
     db = SessionLocal()
-
     classification = db.query(Classificacao).get(id)
 
     if not classification:
@@ -241,6 +292,34 @@ def approve_classification(id: int):
     classification.status = "aprovado"
 
     db.commit()
+
+    try:
+        texto_para_vetorizar = f"Produto: {classification.descricao}. Justificativa: {classification.justificativa}"
+
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+        chunks = text_splitter.split_text(texto_para_vetorizar)
+
+        points = []
+        for chunk in chunks:
+            vector = embeddings.embed_query(chunk)
+            points.append(PointStruct(
+                id=str(uuid.uuid4()),
+                vector=vector,
+                payload={
+                    "id_banco": classification.id,
+                    "descricao": classification.descricao,
+                    "categoria": classification.categoria,
+                    "texto_chunk": chunk
+                }
+            ))
+
+        qdrant_client.upsert(
+            collection_name=COLLECTION_NAME,
+            points=points
+        )
+    except Exception as e:
+        print(f"Erro ao salvar no Qdrant: {e}")
+
     db.close()
 
     return {"ok": True}

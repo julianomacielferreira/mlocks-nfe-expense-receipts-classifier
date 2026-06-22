@@ -72,6 +72,10 @@ $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 $ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
 ```
 
+```bash
+$ docker exec mlocks-nferc-ollama ollama pull nomic-embed-text
+```
+
 Para validar se o modelo foi baixado corretamente e interagir via _prompt_, execute o seguinte comando:
 
 ```bash
@@ -175,6 +179,10 @@ Encontrados 6 XMLs
 @TODO
 
 ## License
+
+Llama LLM - [Llama](https://developer.meta.com/ai/docs/overview/)
+
+Qdrant - [High-Performance Vector Search](https://qdrant.tech/)
 
 freeCodeCamp YouTube Channel - [Ollama Course – Build AI Apps Locally](https://www.youtube.com/watch?v=GWB9ApTPTv4)
 

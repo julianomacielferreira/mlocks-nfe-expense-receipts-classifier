@@ -27,7 +27,8 @@ from interfaces import Classifier
 class OllamaClassifier(Classifier):
     def __init__(self, api): self.api = api
 
-    async def classify(self, xml_clean, mode): return await self.api.classify(xml_clean, mode)
+    async def classify(self, xml_clean, mode):
+        return await self.api.classify(xml_clean, mode)
 
 
 class MockClassifier(Classifier):
