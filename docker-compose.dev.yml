@@ -6,7 +6,7 @@ services:
       ENV: development
     volumes:
       - ./api:/app
-      - ./nfe_classifier:/app/nfe_classifier
+      - ./nfe_classifier:/nfe_classifier
       - ./sa.json:/secrets/sa.json:ro
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "/app" ]
 
