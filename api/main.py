@@ -194,9 +194,34 @@ async def ollama_classifier(dados: dict) -> dict:
                     }
                 }
             )
-    except Exception:
-        logger.exception("HTTP request to Ollama failed")
-        raise
+    except httpx.ReadTimeout:
+        logger.exception("Ollama read timeout")
+
+        raise HTTPException(
+            status_code=504,
+            detail="Ollama timed out while generating a response."
+        )
+    except httpx.ConnectTimeout:
+        logger.exception("Unable to connect to Ollama")
+
+        raise HTTPException(
+            status_code=503,
+            detail="Unable to connect to Ollama."
+        )
+    except httpx.HTTPError as ex:
+        logger.exception("HTTP error talking to Ollama")
+
+        raise HTTPException(
+            status_code=502,
+            detail=f"Ollama HTTP error: {repr(ex)}"
+        )
+    except Exception as ex:
+        logger.exception("Unexpected Ollama error")
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unexpected error: {repr(ex)}"
+        )
 
     response.raise_for_status()
 
