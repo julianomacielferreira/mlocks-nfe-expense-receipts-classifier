@@ -233,7 +233,7 @@ async def ollama_classifier(dados: dict) -> dict:
             status_code=502,
             detail=response.text
         )
-    
+
     try:
         body = response.json()
     except Exception:
