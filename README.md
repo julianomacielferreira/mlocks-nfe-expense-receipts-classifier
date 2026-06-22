@@ -138,24 +138,41 @@ $ docker exec -it mlocks-nferc-ollama ollama run llama3.2
 9 directories, 29 files
 ```
 
-### Importador de NFe nfe_importer.py
+### Classificador em lote de NFe
 
-@TODO
+Dentro do projeto existe um sistema para classificação em batch `nfe_classifier/main.py`.
+
+Para utilizá-lo, salve seus arquivos xml dentro do diretório `./nfe_files/` e use o comando abaixo
+com o parâmetro `--workers {número-de-workers}` para controlar o paralelismo:
 
 ```bash
-$ python3 api/nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 5
+$ python3 api/nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 2
 ```
 
 A saída seria algo como:
 
 ```
-Encontrados 6 XMLs
-✅ [1/6] nfe6271606493106188290.xml -> Eletrônicos
-✅ [2/6] nota_500418-100.xml -> Despesas com Serviços
-✅ [3/6] NFe42251238181833000179550010000068791673229235-nfe.xml -> Equipamento de Oficina
-✅ [4/6] 42260300718661000157550010012017901706151365.xml -> Material de construção
-✅ [5/6] 42250644004468000120550010000006461043157399-procNFe.xml -> Manutenção e Reparo de Equipamentos
-✅ [6/6] 42251144004468000120550010000012011178847429-procNFe.xml -> Roupas e Acessórios
+Encontrados 16 XMLs
+✅ [1/16] 342230134055015_v0400-procNFe.xml -> Veículos e Transportes
+✅ [2/16] 42251144004468000120550010000013131485078828-procNFe.xml -> Manutenção e Reparos - Equipamentos de Oficina
+✅ [3/16] 42250644004468000120550010000006461043157399-procNFe.xml -> Transporte
+✅ [4/16] 42251144004468000120550010000012011178847429-procNFe.xml -> Transporte
+✅ [5/16] 42260300718661000157550010012017901706151365.xml -> Materiais de Construção
+✅ [6/16] 342220156142671_v0400-procNFe.xml -> Transporte
+✅ [7/16] 42250644004468000120550010000006361865636646-procNFe.xml -> Manutenção de Equipamentos
+✅ [8/16] 42220725124912000104550010000012211519672524-nfe.xml -> Transporte
+✅ [9/16] NFe42251238181833000179550010000068791673229235-nfe.xml -> Manutenção de Equipamentos
+✅ [10/16] 42250644004468000120550010000006471527213855-procNFe.xml -> Manutenção de Equipamentos
+✅ [11/16] 42250444004468000120550010000003821370231918-procNFe.xml -> Manutenção de Equipamentos
+✅ [12/16] 42250844004468000120550010000009321733053788-procNFe.xml -> Manutenção de Equipamentos
+✅ [13/16] 42230625124912000104550010000014921343202807-nfe.xml -> Transporte
+✅ [14/16] nfe6271606493106188290.xml -> Eletrônicos
+✅ [15/16] 42250644004468000120550010000005861406912160-procNFe.xml -> Manutenção de Equipamentos
+✅ [16/16] nota_500418-100.xml -> Materiais de Construção
+
+CSV salvo em: nfe_files/resultado_classificacao_20260622_183336.csv
+Tempo total: 254.80s
+Média por arquivo: 15.92s
 ```
 
 ### Modelos do Ollama e como utilizá-los
