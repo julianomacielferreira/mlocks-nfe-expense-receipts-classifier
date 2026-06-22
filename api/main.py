@@ -27,7 +27,6 @@ import hashlib
 import httpx
 import uuid
 import logging
-import traceback
 
 from datetime import datetime
 from typing import Literal, Optional
