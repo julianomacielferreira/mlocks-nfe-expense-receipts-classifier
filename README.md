@@ -1,6 +1,7 @@
 ## NFERC - Classificador de despesas a partir de Nota Fiscais Eletrônicas com IA generativa (LLM).
 
-**NFERC - _Nota Fiscal Eletrônica Receipt Classifier_** é um sistema que automatiza a classificação de despesas a partir de
+**NFERC - _Nota Fiscal Eletrônica Receipt Classifier_** é um sistema que automatiza a classificação de despesas a partir
+de
 arquivos XML de NF-e (Notas Fiscais Eletrônicas) usando **IA generativa (LLMs - Large Language Models)**.
 O **NFERC** lê o XML da NF-e, consulta o LLaMA 2 que sugere a _categoria_ com _justificativa_ para a despesa.
 
@@ -44,11 +45,14 @@ $ cd mlocks-nfe-expense-receipts-classifier
 
 O projeto utiliza variáveis de ambiente para configuração dos serviços.
 
-Renomeie o arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example) em `backend/.env.example` para **.env**.
+Renomeie o
+arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example)
+em `backend/.env.example` para **.env**.
 
 ```bash
 $ cp backend/.env.example backend/.env
 ```
+
 ou, se preferir:
 
 ```bash
@@ -79,7 +83,8 @@ LOG_LEVEL=INFO
 
 ### Construindo os containers
 
-Execute os seguintes comandos para fazer o build, subir seus containers e fazer o download do modelo no ollama (LLM local):
+Execute os seguintes comandos para fazer o build, subir seus containers e fazer o download do modelo no ollama (LLM
+local):
 
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
@@ -127,7 +132,8 @@ ou
 docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
 ```
 
-Você pode utilizar qualquer modelo compatível configurando posteriormente a variável correspondente no arquivo `backend/.env`.
+Você pode utilizar qualquer modelo compatível configurando posteriormente a variável correspondente no arquivo
+`backend/.env`.
 
 ```
 LLM_MODEL=gemma2:2b
@@ -143,8 +149,8 @@ Resposta esperada:
 
 ```json
 {
-    "status": "UP",
-    "architecture": "Layered RAG"
+  "status": "UP",
+  "architecture": "Layered RAG"
 }
 ```
 
@@ -152,12 +158,24 @@ Resposta esperada:
 
 Após a inicialização, os serviços estarão disponíveis em:
 
-| Serviço    | URL |
-| -------- | --- |
-| Frontend  | http://localhost:8080    |
-| API | http://localhost:8000 |
-| Swagger    | http://localhost:8000/docs |
-| Ollama    | http://localhost:11434 |
+| Serviço  | URL                        |
+|----------|----------------------------|
+| Frontend | http://localhost:8080      |
+| API      | http://localhost:8000      |
+| Swagger  | http://localhost:8000/docs |
+| Ollama   | http://localhost:11434     |
+
+## Encerrando a aplicação
+
+```bash
+$ docker compose down
+```
+
+Para remover os volumes persistentes:
+
+```bash
+docker compose down -v
+```
 
 ### Estrutura de arquivos do Projeto
 
@@ -294,7 +312,8 @@ freeCodeCamp YouTube Channel - [Ollama Course – Build AI Apps Locally](https:/
 
 Docker: Accelerated Container Application Development - [Docker](https://docs.docker.com/install/)
 
-Docker Compose is a tool for defining and running multi-container applications - [Docker Compose](https://docs.docker.com/compose/install/)
+Docker Compose is a tool for defining and running multi-container
+applications - [Docker Compose](https://docs.docker.com/compose/install/)
 
 Git is a free and open source distributed version control system - [Git](https://git-scm.com/)
 
