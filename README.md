@@ -127,11 +127,11 @@ $ docker exec -it mlocks-nferc-ollama ollama pull llama3.1:8b
 ou
 
 ```bash
-docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
+$ docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
 ```
 
 Você pode utilizar qualquer modelo compatível configurando posteriormente a variável correspondente no arquivo
-`backend/.env`.
+`api/.env`.
 
 ```
 LLM_MODEL=gemma2:2b
