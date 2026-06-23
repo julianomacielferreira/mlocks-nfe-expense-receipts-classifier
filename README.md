@@ -326,10 +326,6 @@ O banco de dados contém uma única tabela. O script para criação está em `sc
 
 ![NFERC Database](mlocks-nferc-database.png)
 
-## Testes
-
-@TODO
-
 ## Swagger Docs
 
 Para acessar documentação Swagger basta acessar http://localhost:8000/docs.
