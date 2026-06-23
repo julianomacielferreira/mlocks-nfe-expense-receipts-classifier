@@ -394,6 +394,156 @@ $ curl --location --request POST 'http://localhost:8000/classificacoes/37/aprova
 
 ---
 
+### Rejeitar por id (POST):
+
+- **classificacoes/{{id}}/rejeitar**
+
+Exemplo:
+
+```bash
+$ curl --location --request POST 'http://localhost:8000/classificacoes/8/rejeitar'
+```
+
+<details>
+<summary><b>Resposta</b></summary>
+
+```json
+{
+    "ok": true
+}
+```
+
+</details>
+
+---
+
+### Listar aprovados (GET):
+
+- **/classificacoes?status=aprovado**
+
+Exemplo:
+
+```bash
+$ curl --location 'http://localhost:8000/classificacoes?status=aprovado'
+```
+
+<details>
+<summary><b>Resposta</b></summary>
+
+```json
+{
+    "items": [
+        {
+            "id": 64,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "O histórico aprovado indica que o produto está relacionado à manutenção de equipamentos. A nota atual descreve o mesmo produto com o mesmo tamanho e especificações, indicando que a descrição é consistente com o histórico.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "70.00",
+            "descricao": "RAIO INOX PTO, NIPLE, 2,0 X 283MM",
+            "criado_em": "2026-06-23T00:38:36.490774"
+        },
+        {
+            "id": 63,
+            "categoria": "Manutenção e Reparos",
+            "justificativa": "O histórico de despesas aprovadas indica repetições frequentes para o produto CONDUITE TEFLON PRETO 20M, corroborando a necessidade de manutenção e reparos em equipamentos.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "12.00",
+            "descricao": "CONDUITE TEFLON PRETO 20M",
+            "criado_em": "2026-06-23T00:38:17.271461"
+        },
+        {
+            "id": 62,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "O histórico mostra que o produto é manuseado em manutenção de equipamentos. O registro da nota atual se assemelha ao histórico, com o mesmo nome do produto e descrição.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "53.99",
+            "descricao": "MANOPLA ABSOLUTE HL-G247 VMO",
+            "criado_em": "2026-06-23T00:37:52.030018"
+        },
+        {
+            "id": 60,
+            "categoria": "Despesas com Materiais de Equipamento",
+            "justificativa": "A descrição do produto indica que a SAPATILHA MTB AVVA PRETO 40 AVVA é utilizada como material de equipamento para atividades de ciclismo.  Conforme o histórico aprovado, esta categoria se aplica a itens como este.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "234.00",
+            "descricao": "SAPATILHA MTB AVVA PRETO 40 AVVA",
+            "criado_em": "2026-06-23T00:37:07.223334"
+        },
+        {
+            "id": 58,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "A descrição do produto mudou para 'RAIO INOX PTO, NIPLE, 2,0 X 290MM' que corresponde a uma categoria de manutenção de equipamentos. Apesar de ser um produto de manutenção, o histórico aponta que a solicitação é relacionada à manutenção de equipamentos, e não apenas de reparos.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "2.50",
+            "descricao": "RAIO INOX PTO, NIPLE, 2,0 X 290MM",
+            "criado_em": "2026-06-23T00:36:34.234381"
+        },
+        {
+            "id": 56,
+            "categoria": "Eletrônicos de entretenimento",
+            "justificativa": "O produto é um headset gamer da marca Redragon, conhecido por oferecer alta qualidade em áudio para jogos.  A categoria se aplica pois ele é destinado a ser utilizado em atividades relacionadas ao entretenimento, especialmente em jogos.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "139.99",
+            "descricao": "Headset Gamer Redragon Hylas, RGB, 7.1 Surround, Drivers de 50mm, USB, Preto, H371-RGB",
+            "criado_em": "2026-06-23T00:35:51.415252"
+        },
+        {
+            "id": 53,
+            "categoria": "Despesas com Materiais de Equipamento",
+            "justificativa": "Os pedidos de equipamentos são constantes e justificam a inclusão da categoria Despesas com Materiais de Equipamento.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "367.00",
+            "descricao": "SELIM MTB STRATUS PTO GTA",
+            "criado_em": "2026-06-23T00:35:23.900363"
+        },
+        {
+            "id": 52,
+            "categoria": "Transporte",
+            "justificativa": "O histórico sugere que o produto é uma bicicleta, que se encaixa na categoria de transporte, e a nota atual mantém essa classificação, considerando a descrição e valor do item.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "3800.00",
+            "descricao": "BICICLETA CALOI EXPLORER EXPERT PTO TAM: M (17)",
+            "criado_em": "2026-06-23T00:35:14.336918"
+        },
+        {
+            "id": 51,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "O histórico aponta a necessidade de manutenção de equipamentos como justificativa para o gasto, especificando o modelo de equipamento 'MOV CENTRAL PFIT 41, KL 102 A VERMELHO'. O valor da compra se encaixa nessa categoria de acordo com o histórico aprovado.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "139.00",
+            "descricao": "MOV CENTRAL PFIT 41, KL 102 A VERMELHO",
+            "criado_em": "2026-06-23T00:35:03.817298"
+        },
+        {
+            "id": 50,
+            "categoria": "Material de Construção",
+            "justificativa": "O histórico de compra demonstra a regularidade da categoria 'Material de Construção' para o produto MDF EUCATEX BRANCO 03MM COM TX 275X185 T-HDF 1FC BIANCO PRIME 1 FC SELADOR.",
+            "origem": "ollama",
+            "status": "aprovado",
+            "valor": "115.80",
+            "descricao": "MDF EUCATEX BRANCO 03MM COM TX 275X185 T-HDF 1FC BIANCO PRIME 1 FC SELADOR",
+            "criado_em": "2026-06-23T00:34:49.938390"
+        }
+    ],
+    "total": 49,
+    "page": 1,
+    "pages": 5
+}
+```
+
+</details>
+
+---
+
 ## Referências
 
 OLLama Library - [library](https://ollama.com/library)
