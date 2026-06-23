@@ -79,7 +79,7 @@ $ docker exec mlocks-nferc-ollama ollama pull nomic-embed-text
 Para validar se o modelo foi baixado corretamente e interagir via _prompt_, execute o seguinte comando:
 
 ```bash
-$ docker exec -it mlocks-nferc-ollama ollama run llama3.2
+$ docker exec -it mlocks-nferc-ollama ollama run gemma2:2b
 ```
 
 ### Principais URLs
