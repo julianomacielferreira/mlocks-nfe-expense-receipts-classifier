@@ -45,21 +45,19 @@ $ cd mlocks-nfe-expense-receipts-classifier
 
 O projeto utiliza variáveis de ambiente para configuração dos serviços.
 
-Renomeie o
-arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example)
-em `backend/.env.example` para **.env**.
+Renomeie o arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example) em `api/.env.example` para `api/.env`.
 
 ```bash
-$ cp backend/.env.example backend/.env
+$ cp api/.env.example api/.env
 ```
 
 ou, se preferir:
 
 ```bash
-$ mv backend/.env.example backend/.env
+$ mv api/.env.example api/.env
 ```
 
-Em seguida, ajuste as variáveis conforme necessário.
+Em seguida, ajuste as variáveis conforme necessário no arquivo `api/.env`.
 
 Exemplo:
 
@@ -175,6 +173,30 @@ Para remover os volumes persistentes:
 
 ```bash
 docker compose down -v
+```
+
+### Estrutura dos containers
+
+O ambiente é composto pelos seguintes serviços:
+
+| Serviço          | Responsabilidade                |
+| ---------------- | ------------------------------- |
+| Frontend (Nginx) | Interface Web                   |
+| FastAPI          | API REST e orquestração da IA   |
+| PostgreSQL       | Persistência das classificações |
+| Ollama           | Inferência dos modelos LLM      |
+| Qdrant           | Banco vetorial para RAG         |
+
+### Desenvolvimento
+
+Durante o desenvolvimento, o backend é iniciado utilizando Hot Reload do Uvicorn.
+
+Qualquer alteração no código Python será automaticamente recarregada, sem necessidade de reconstruir os containers.
+
+Caso novas dependências sejam adicionadas ao `api/requirements.txt`, execute novamente:
+
+```bash
+$ docker compose build api
 ```
 
 ### Estrutura de arquivos do Projeto
