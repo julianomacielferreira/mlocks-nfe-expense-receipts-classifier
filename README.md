@@ -201,6 +201,8 @@ $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build api
 
 ### Estrutura de arquivos do Projeto
 
+O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → PostgreSQL
+
 ```
 .
 ├── api
