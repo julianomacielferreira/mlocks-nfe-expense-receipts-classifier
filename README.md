@@ -1,4 +1,4 @@
-## NFERC - Classificador de despesas a partir de Nota Fiscais Eletrônicas com IA generativa (LLM).  $${\color{red}[in \space progress]}$$
+## NFERC - Classificador de despesas a partir de Nota Fiscais Eletrônicas com IA generativa (LLM).
 
 **NFERC - _Nota Fiscal Eletrônica Receipt Classifier_** é um sistema que automatiza a classificação de despesas a partir de
 arquivos XML de NF-e (Notas Fiscais Eletrônicas) usando IA generativa (LLMs - Large Language Models).
@@ -16,33 +16,7 @@ PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a d
 
 **Diferencial:** roda 100% em Docker na sua máquina com LLaMA 2 via **Ollama**.
 
-## Arquitetura
-
-```
-                     Docker Network
-────────────────────────────────────────────────────────────
-
-              +----------------------+
-              |      Frontend        |
-              |      nginx           |
-              +----------+-----------+
-                         |
-                         |
-              +----------v-----------+
-              |     FastAPI API      |
-              |  Uvicorn             |
-              |  Health Checks       |
-              +----------+-----------+
-                         |
-        +----------------+----------------+
-        |                                 |
-+-------v--------+                +-------v--------+
-| PostgreSQL     |                | Ollama         |
-| Healthcheck    |                | Healthcheck    |
-| Persistent Vol |                | Persistent Vol |
-+----------------+                +----------------+
-
-```
+![NFERC](mlocks-nferc-logo.png)
 
 ## Como inicializar o Projeto
 
