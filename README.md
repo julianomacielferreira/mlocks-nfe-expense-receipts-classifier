@@ -239,7 +239,10 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
 │   └── index.html
 ├── .gitignore
 ├── LICENSE
+├── MLocks-NERC-NFe-Expense-Receipt-Classifier.postman_collection.json
+├── mlocks-nferc-database.png
 ├── mlocks-nferc-logo.png
+├── mlocks-nferc-swagger-docs.png
 ├── nfe_classifier
 │   ├── classifiers
 │   │   ├── batch_classifier.py
@@ -268,7 +271,7 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
     ├── init_db.py
     └── init_db.sql
 
-21 directories, 43 files
+21 directories, 46 files
 ```
 
 ### Classificador em lote de NFe
@@ -343,7 +346,7 @@ Uma coleção de endpoints do Postman está localizada no arquivo [MLocks-NERC-N
 Exemplo:
 
 ```bash
-$ curl --location 'http://localhost:8000/classificar' \
+$ curl --location --request POST 'http://localhost:8000/classificar' \
 --header 'Content-Type: application/json' \
 --data '{
     "xml_nfe": "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"><NFe><infNFe><det><prod><xProd>CONSULTORIA CONTABIL MENSAL</xProd></prod></det><total><ICMSTot><vNF>1500.00</vNF></ICMSTot></total></infNFe></NFe></nfeProc>",
@@ -361,6 +364,29 @@ $ curl --location 'http://localhost:8000/classificar' \
     "justificativa": "O histórico de despesas aponta para a categoria Manutenção de Equipamentos, sendo que o valor da nota atual se refere à consulta contábil mensal. A classificação é justificada pela natureza das operações realizadas.",
     "origem": "auto",
     "status": "sugerido"
+}
+```
+
+</details>
+
+---
+
+### Aprovar por id (POST):
+
+- **classificacoes/{{id}}/aprovar**
+
+Exemplo:
+
+```bash
+$ curl --location --request POST 'http://localhost:8000/classificacoes/37/aprovar'
+```
+
+<details>
+<summary><b>Resposta</b></summary>
+
+```json
+{
+    "ok": true
 }
 ```
 
