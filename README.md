@@ -139,9 +139,7 @@ LLM_MODEL=gemma2:2b
 
 ### Verificando a API
 
-Acesse:
-
-http://localhost:8000/health
+Acesse: http://localhost:8000/health
 
 Resposta esperada:
 
