@@ -1,11 +1,11 @@
 ## NFERC - Classificador de despesas a partir de Nota Fiscais Eletrônicas com IA generativa (LLM).
 
 **NFERC - _Nota Fiscal Eletrônica Receipt Classifier_** é um sistema que automatiza a classificação de despesas a partir de
-arquivos XML de NF-e (Notas Fiscais Eletrônicas) usando IA generativa (LLMs - Large Language Models).
+arquivos XML de NF-e (Notas Fiscais Eletrônicas) usando **IA generativa (LLMs - Large Language Models)**.
 O **NFERC** lê o XML da NF-e, consulta o LLaMA 2 que sugere a _categoria_ com _justificativa_ para a despesa.
 
 O projeto é implementado em Python e Vuejs, **rodando localmente com Docker e sem depender de cloud**. Todas as
-dependências rodam em ambiente de desenvolvimento.
+dependências rodam em **ambiente de desenvolvimento**.
 
 ---
 
