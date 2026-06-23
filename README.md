@@ -330,9 +330,15 @@ O banco de dados contém uma única tabela. O script para criação está em `sc
 
 @TODO
 
+## Swagger Docs
+
+Para acessar documentação Swagger basta acessar http://localhost:8000/docs.
+
+![Swagger Docs](mlocks-nferc-swagger-docs.png)
+
 ## Endpoints
 
-@TODO
+Uma coleção de endpoints do Postman está localizada no arquivo [MLocks-NERC-NFe-Expense-Receipt-Classifier.postman_collection.json](./MLocks-NERC-NFe-Expense-Receipt-Classifier.postman_collection.json) e abaixo estão exemplos de chamadas cURL para os endpoints.
 
 ## Referências
 

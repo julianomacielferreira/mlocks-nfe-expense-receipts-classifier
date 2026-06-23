@@ -1,0 +1,213 @@
+{
+  "info": {
+    "_postman_id": "52fc9e0d-c7cf-41fe-a89f-e03374cdffeb",
+    "name": "MLocks NERC - NFe Expense Receipt Classifier",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46564992",
+    "_collection_link": "https://go.postman.co/collection/46564992-52fc9e0d-c7cf-41fe-a89f-e03374cdffeb?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_URL}}/health",
+          "host": [
+            "{{base_URL}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Classificar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "// {\n//     \"xml_nfe\": \"<nfeProc xmlns=\\\"http://www.portalfiscal.inf.br/nfe\\\"><NFe><infNFe><det><prod><xProd>SERVICO DE HOSPEDAGEM DE SITE</xProd></prod></det><total><ICMSTot><vNF>299.90</vNF></ICMSTot></total></infNFe></NFe></nfeProc>\",\n//     \"modo\": \"ollama\"\n// }\n{\n    \"xml_nfe\": \"<nfeProc xmlns=\\\"http://www.portalfiscal.inf.br/nfe\\\"><NFe><infNFe><det><prod><xProd>CONSULTORIA CONTABIL MENSAL</xProd></prod></det><total><ICMSTot><vNF>1500.00</vNF></ICMSTot></total></infNFe></NFe></nfeProc>\",\n    \"modo\": \"ollama\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_URL}}/classificar",
+          "host": [
+            "{{base_URL}}"
+          ],
+          "path": [
+            "classificar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ollama Generate",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"model\": \"gemma2:2b\",\n    \"prompt\": \"Diga apenas um JSON {\\\"categoria\\\":\\\"Teste\\\",\\\"justificativa\\\":\\\"Teste\\\"}\",\n    \"stream\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:11434/api/generate",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "11434",
+          "path": [
+            "api",
+            "generate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Classificacoes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_URL}}/classificacoes?status=sugerido&page=1&limit=10",
+          "host": [
+            "{{base_URL}}"
+          ],
+          "path": [
+            "classificacoes"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "sugerido"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Lista Aprovados",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_URL}}/classificacoes?status=aprovado",
+          "host": [
+            "{{base_URL}}"
+          ],
+          "path": [
+            "classificacoes"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "aprovado"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Aprovar",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_URL}}/classificacoes/{{id}}/aprovar",
+          "host": [
+            "{{base_URL}}"
+          ],
+          "path": [
+            "classificacoes",
+            "{{id}}",
+            "aprovar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Rejeitar",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_URL}}/classificacoes/{{id}}/rejeitar",
+          "host": [
+            "{{base_URL}}"
+          ],
+          "path": [
+            "classificacoes",
+            "{{id}}",
+            "rejeitar"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_URL",
+      "value": ""
+    }
+  ]
+}
