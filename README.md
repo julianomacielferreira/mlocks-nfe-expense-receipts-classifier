@@ -15,17 +15,69 @@ dependências rodam em **ambiente de desenvolvimento**.
 
 ## Como inicializar o Projeto
 
-Siga os seguintes passos para configurar e iniciar o projeto.
-
-### Configuração do arquivo .ENV
-
-Renomeie o arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example) em `backend/.env.example` para **.env**
+Siga os passos abaixo para configurar e executar o ambiente completo da aplicação utilizando Docker.
 
 ### Pré-requisitos
 
-É necessário ter instalados o **[Docker](https://docs.docker.com/install/)** e **[Docker Compose](https://docs.docker.com/compose/install/)** em sua máquina.
+Antes de iniciar, certifique-se de possuir os seguintes softwares instalados em sua máquina:
 
-### Subir o container docker
+- Docker 24+
+- Docker Compose v2+
+- Git
+
+Opcionalmente, para executar scripts Python localmente (fora do Docker):
+
+- Python 3.11+
+- pip
+
+### Clonando o repositório
+
+```bash
+$ git clone https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier.git
+```
+
+```bash
+$ cd mlocks-nfe-expense-receipts-classifier
+```
+
+### Configuração do arquivo `.env`
+
+O projeto utiliza variáveis de ambiente para configuração dos serviços.
+
+Renomeie o arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example) em `backend/.env.example` para **.env**.
+
+```bash
+$ cp backend/.env.example backend/.env
+```
+ou, se preferir:
+
+```bash
+$ mv backend/.env.example backend/.env
+```
+
+Em seguida, ajuste as variáveis conforme necessário.
+
+Exemplo:
+
+```
+ENV=development
+MODE=ollama
+PROJECT_ID=mlocks-nferc
+API_PORT=8000
+POSTGRES_DB=mlocks_nferc_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=qwerty
+POSTGRES_PORT=5432
+DATABASE_URL=postgresql://postgres:qwerty@database:5432/mlocks_nferc_db
+OLLAMA_PORT=11434
+OLLAMA_URL=http://ollama:11434
+LLM_MODEL=gemma2:2b
+QDRANT_URL=http://qdrant:
+FRONTEND_PORT=5173
+LOG_LEVEL=INFO
+```
+
+### Construindo os containers
 
 Execute os seguintes comandos para fazer o build, subir seus containers e fazer o download do modelo no ollama (LLM local):
 
@@ -51,15 +103,61 @@ Para validar se o modelo foi baixado corretamente e interagir via _prompt_, exec
 $ docker exec -it mlocks-nferc-ollama ollama run gemma2:2b
 ```
 
-### Principais URLs
+### Verificando os containers
 
-#### Backend: http://localhost:8000/
+Confira se todos os serviços estão em execução:
 
-#### Frontend: http://localhost:5173/
+```bash
+$ docker compose ps
+```
 
-#### Swagger docs da API: http://localhost:8000/docs
+## Baixando outros modelos da IA
 
-#### Ollama: http://localhost:11434
+Na primeira execução é necessário instalar o modelo utilizado pelo Ollama.
+
+Exemplo:
+
+```bash
+$ docker exec -it mlocks-nferc-ollama ollama pull llama3.1:8b
+```
+
+ou
+
+```bash
+docker exec -it mlocks-nferc-ollama ollama pull gemma2:2b
+```
+
+Você pode utilizar qualquer modelo compatível configurando posteriormente a variável correspondente no arquivo `backend/.env`.
+
+```
+LLM_MODEL=gemma2:2b
+```
+
+### Verificando a API
+
+Acesse:
+
+http://localhost:8000/health
+
+Resposta esperada:
+
+```json
+{
+    "status": "UP",
+    "architecture": "Layered RAG"
+}
+```
+
+### Acessando a aplicação
+
+Após a inicialização, os serviços estarão disponíveis em:
+
+| Serviço    | URL |
+| -------- | --- |
+| Frontend  | http://localhost:8080    |
+| API | http://localhost:8000 |
+| Swagger    | http://localhost:8000/docs |
+| Ollama    | http://localhost:11434 |
 
 ### Estrutura de arquivos do Projeto
 
@@ -101,6 +199,7 @@ $ docker exec -it mlocks-nferc-ollama ollama run gemma2:2b
 │   └── index.html
 ├── .gitignore
 ├── LICENSE
+├── mlocks-nferc-logo.png
 ├── nfe_classifier
 │   ├── classifiers
 │   │   ├── batch_classifier.py
@@ -129,7 +228,7 @@ $ docker exec -it mlocks-nferc-ollama ollama run gemma2:2b
     ├── init_db.py
     └── init_db.sql
 
-21 directories, 42 files
+21 directories, 43 files
 ```
 
 ### Classificador em lote de NFe
@@ -187,15 +286,19 @@ Média por arquivo: 15.92s
 
 ## Referências
 
-@TODO
-
-## License
-
 Llama LLM - [Llama](https://developer.meta.com/ai/docs/overview/)
 
 Qdrant - [High-Performance Vector Search](https://qdrant.tech/)
 
 freeCodeCamp YouTube Channel - [Ollama Course – Build AI Apps Locally](https://www.youtube.com/watch?v=GWB9ApTPTv4)
+
+Docker: Accelerated Container Application Development - [Docker](https://docs.docker.com/install/)
+
+Docker Compose is a tool for defining and running multi-container applications - [Docker Compose](https://docs.docker.com/compose/install/)
+
+Git is a free and open source distributed version control system - [Git](https://git-scm.com/)
+
+## License
 
 FastAPI - This project is licensed under the terms of the [MIT license](https://fastapi.tiangolo.com/#license)
 
