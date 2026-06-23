@@ -45,19 +45,19 @@ $ cd mlocks-nfe-expense-receipts-classifier
 
 O projeto utiliza variáveis de ambiente para configuração dos serviços.
 
-Renomeie o arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example) em `api/.env.example` para `api/.env`.
+Renomeie o arquivo [.env.example](https://github.com/julianomacielferreira/mlocks-nfe-expense-receipts-classifier/blob/main/.env.example) em `.env.example` para `.env`.
 
 ```bash
-$ cp api/.env.example api/.env
+$ cp .env.example .env
 ```
 
 ou, se preferir:
 
 ```bash
-$ mv api/.env.example api/.env
+$ mv .env.example .env
 ```
 
-Em seguida, ajuste as variáveis conforme necessário no arquivo `api/.env`.
+Em seguida, ajuste as variáveis conforme necessário no arquivo `.env`.
 
 Exemplo:
 
@@ -310,11 +310,21 @@ Média por arquivo: 15.92s
 
 ### Modelos do Ollama e como utilizá-los
 
-@TODO
+Para utilizar outros modelos você pode consultar o catálogo da biblioteca em [OLlama Library](https://ollama.com/library).
+
+Depois basta alterar o arquivo `.env` modificando a variável `LLM_MODEL`.
+
+Exemplo:
+
+```
+LLM_MODEL=deepseek-r1
+```
 
 ## Banco de Dados
 
-@TODO
+O banco de dados contém uma única tabela. O script para criação está em `scripts/init_db.sql`.
+
+![NFERC Database](mlocks-nferc-database.png)
 
 ## Testes
 
@@ -325,6 +335,8 @@ Média por arquivo: 15.92s
 @TODO
 
 ## Referências
+
+OLLama Library - [library](https://ollama.com/library)
 
 Llama LLM - [Llama](https://developer.meta.com/ai/docs/overview/)
 
