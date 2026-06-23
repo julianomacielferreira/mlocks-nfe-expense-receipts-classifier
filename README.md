@@ -22,14 +22,14 @@ Siga os passos abaixo para configurar e executar o ambiente completo da aplicaç
 
 Antes de iniciar, certifique-se de possuir os seguintes softwares instalados em sua máquina:
 
-- Docker 24+
-- Docker Compose v2+
-- Git
+- _Docker 24+_
+- _Docker Compose v2+_
+- _Git_
 
 Opcionalmente, para executar scripts Python localmente (fora do Docker):
 
-- Python 3.11+
-- pip
+- _Python 3.11+_
+- _pip_
 
 ### Clonando o repositório
 
