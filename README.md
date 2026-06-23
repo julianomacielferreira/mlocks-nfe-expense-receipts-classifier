@@ -196,7 +196,7 @@ Qualquer alteração no código Python será automaticamente recarregada, sem ne
 Caso novas dependências sejam adicionadas ao `api/requirements.txt`, execute novamente:
 
 ```bash
-$ docker compose build api
+$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build api
 ```
 
 ### Estrutura de arquivos do Projeto
