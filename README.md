@@ -97,9 +97,34 @@ $ docker exec -it mlocks-nferc-ollama ollama run llama3.2
 ```
 .
 ├── api
+│   ├── ai
+│   │   ├── chunker
+│   │   │   └── text_chunker.py
+│   │   ├── classifiers
+│   │   │   └── rag_classifier.py
+│   │   ├── embeddings
+│   │   │   └── provider.py
+│   │   ├── generator
+│   │   │   └── llm_client.py
+│   │   ├── prompts
+│   │   │   └── builder.py
+│   │   └── retriever
+│   │       └── vector_store.py
+│   ├── database
+│   │   └── session.py
 │   ├── Dockerfile
+│   ├── domain
+│   │   ├── entities.py
+│   │   └── schemas.py
+│   ├── endpoints
+│   │   └── controllers.py
 │   ├── main.py
-│   └── requirements.txt
+│   ├── repositories
+│   │   └── classification_repo.py
+│   ├── requirements.txt
+│   └── util
+│       ├── classification_service.py
+│       └── xml_parser.py
 ├── docker-compose.dev.yml
 ├── docker-compose.yml
 ├── .env.example
@@ -135,7 +160,7 @@ $ docker exec -it mlocks-nferc-ollama ollama run llama3.2
     ├── init_db.py
     └── init_db.sql
 
-9 directories, 29 files
+21 directories, 42 files
 ```
 
 ### Classificador em lote de NFe
