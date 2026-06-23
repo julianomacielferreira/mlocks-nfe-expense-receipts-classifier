@@ -71,9 +71,9 @@ async def generate_json_response(prompt: str) -> dict:
 
             return result
 
-    except httpx.HTTPError as e:
-        raise RuntimeError(f"Erro de comunicação com o Ollama: {str(e)}")
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Falha ao fazer parse do JSON retornado pelo Ollama: {str(e)}")
-    except Exception as e:
-        raise RuntimeError(f"Erro inesperado na geração do LLM: {str(e)}")
+    except httpx.HTTPError as ex:
+        raise RuntimeError(f"Erro de comunicação com o Ollama: {str(ex)}")
+    except json.JSONDecodeError as ex:
+        raise ValueError(f"Falha ao fazer parse do JSON retornado pelo Ollama: {str(ex)}")
+    except Exception as ex:
+        raise RuntimeError(f"Erro inesperado na geração do LLM: {str(ex)}")

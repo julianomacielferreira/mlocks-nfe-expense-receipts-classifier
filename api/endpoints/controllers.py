@@ -36,8 +36,8 @@ router = APIRouter()
 async def classify(req: ClassificarRequest, db: Session = Depends(get_db)):
     try:
         return await classification_service.process_new_nfe(req.xml_nfe, req.mode, db)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as ex:
+        raise HTTPException(status_code=400, detail=str(ex))
 
 
 @router.get("/classificacoes")
