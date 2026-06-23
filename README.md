@@ -7,11 +7,6 @@ O **NFERC** lê o XML da NF-e, consulta o LLaMA 2 que sugere a _categoria_ com _
 O projeto é implementado em Python e Vuejs, **rodando localmente com Docker e sem depender de cloud**. Todas as
 dependências rodam em ambiente de desenvolvimento.
 
-Em resumo, o sistema faz o seguinte processo:
-
-> **Python extrai XML → FastAPI envia para LLaMA 2 → LLaMA 2 sugere categoria com justificativa → Python grava no
-PostgreSQL com status "sugerido" → Usuário valida aprovando ou rejeitando a despesa no frontend Vuejs**
-
 ---
 
 **Diferencial:** roda 100% em Docker na sua máquina com LLaMA 2 via **Ollama**.
