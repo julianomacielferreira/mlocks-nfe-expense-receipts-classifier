@@ -336,6 +336,38 @@ Para acessar documentação Swagger basta acessar http://localhost:8000/docs.
 
 Uma coleção de endpoints do Postman está localizada no arquivo [MLocks-NERC-NFe-Expense-Receipt-Classifier.postman_collection.json](./MLocks-NERC-NFe-Expense-Receipt-Classifier.postman_collection.json) e abaixo estão exemplos de chamadas cURL para os endpoints.
 
+### Classificar (POST):
+
+- **classificar**
+
+Exemplo:
+
+```bash
+$ curl --location 'http://localhost:8000/classificar' \
+--header 'Content-Type: application/json' \
+--data '{
+    "xml_nfe": "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"><NFe><infNFe><det><prod><xProd>CONSULTORIA CONTABIL MENSAL</xProd></prod></det><total><ICMSTot><vNF>1500.00</vNF></ICMSTot></total></infNFe></NFe></nfeProc>",
+    "modo": "ollama"
+}'
+```
+
+<details>
+<summary><b>Resposta</b></summary>
+
+```json
+{
+    "id": 174,
+    "categoria": "Manutenção de Equipamentos",
+    "justificativa": "O histórico de despesas aponta para a categoria Manutenção de Equipamentos, sendo que o valor da nota atual se refere à consulta contábil mensal. A classificação é justificada pela natureza das operações realizadas.",
+    "origem": "auto",
+    "status": "sugerido"
+}
+```
+
+</details>
+
+---
+
 ## Referências
 
 OLLama Library - [library](https://ollama.com/library)
