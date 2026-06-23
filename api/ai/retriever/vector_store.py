@@ -21,26 +21,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from endpoints.controllers import router
-from database.session import engine, Base
+import os
+import uuid
+from qdrant_client import QdrantClient
+from qdrant_client.models import PointStruct
+from ai.embeddings.provider import embeddings
 
-# Create DB Tables
-Base.metadata.create_all(bind=engine)
-
-app = FastAPI(title="NFERC - Classificador de despesas a partir de NFe's com IA generativa (LLM)")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-app.include_router(router)
+QDRANT_URL = os.getenv("QDRANT_URL", "http://qdrant:6333")
+COLLECTION_NAME = "nferc_classificacoes"
+qdrant_client = QdrantClient(url=QDRANT_URL)
 
 
-@app.get("/health")
-def health():
-    return {"status": "UP", "architecture": "Layered RAG"}
+async def search_similar_expenses(descricao: str, limit: int = 3) -> list:
+    query_vector = embeddings.embed_query(descricao)
+    results = qdrant_client.search(
+        collection_name=COLLECTION_NAME,
+        query_vector=query_vector,
+        limit=limit
+    )
+    return results
+
+
+def upsert_vectors(chunks: list, metadata: dict):
+    points = []
+    for chunk in chunks:
+        vector = embeddings.embed_query(chunk)
+        points.append(PointStruct(
+            id=str(uuid.uuid4()),
+            vector=vector,
+            payload={**metadata, "texto_chunk": chunk}
+        ))
+    qdrant_client.upsert(collection_name=COLLECTION_NAME, points=points)

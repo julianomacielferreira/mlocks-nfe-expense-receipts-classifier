@@ -21,26 +21,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from endpoints.controllers import router
-from database.session import engine, Base
+import os
+from langchain_community.embeddings import OllamaEmbeddings
 
-# Create DB Tables
-Base.metadata.create_all(bind=engine)
-
-app = FastAPI(title="NFERC - Classificador de despesas a partir de NFe's com IA generativa (LLM)")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-app.include_router(router)
-
-
-@app.get("/health")
-def health():
-    return {"status": "UP", "architecture": "Layered RAG"}
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://ollama:11434")
+# Ensure the model matches what you pull in Docker
+embeddings = OllamaEmbeddings(model="nomic-embed-text", base_url=OLLAMA_URL)

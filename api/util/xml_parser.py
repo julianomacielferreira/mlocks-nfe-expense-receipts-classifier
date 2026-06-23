@@ -21,26 +21,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from endpoints.controllers import router
-from database.session import engine, Base
-
-# Create DB Tables
-Base.metadata.create_all(bind=engine)
-
-app = FastAPI(title="NFERC - Classificador de despesas a partir de NFe's com IA generativa (LLM)")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-app.include_router(router)
+from lxml import etree
+from fastapi import HTTPException
 
 
-@app.get("/health")
-def health():
-    return {"status": "UP", "architecture": "Layered RAG"}
+def extract_xml_data(xml_str: str) -> dict:
+    try:
+        root = etree.fromstring(xml_str.encode())
+        ns = {"nfe_files": "http://www.portalfiscal.inf.br/nfe"}
+        valor = root.xpath("string(//nfe_files:vNF)", namespaces=ns) or "0"
+        descricao = root.xpath("string(//nfe_files:xProd)", namespaces=ns) or ""
+
+        return {"valor": valor, "descricao": descricao}
+
+    except Exception as e:
+        raise HTTPException(400, f"XML invalid: {e}")

@@ -21,26 +21,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from endpoints.controllers import router
-from database.session import engine, Base
-
-# Create DB Tables
-Base.metadata.create_all(bind=engine)
-
-app = FastAPI(title="NFERC - Classificador de despesas a partir de NFe's com IA generativa (LLM)")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-app.include_router(router)
+from ai.retriever.vector_store import search_similar_expenses
+from ai.prompts.builder import build_classification_prompt
+from ai.generator.llm_client import generate_json_response
 
 
-@app.get("/health")
-def health():
-    return {"status": "UP", "architecture": "Layered RAG"}
+async def classify_expense(dados: dict) -> dict:
+    # 1. Retrieve
+    context = await search_similar_expenses(dados["descricao"])
+
+    # 2. Build Prompt
+    prompt = build_classification_prompt(dados, context)
+
+    # 3. Generate
+    result = await generate_json_response(prompt)
+
+    return result

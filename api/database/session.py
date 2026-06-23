@@ -21,26 +21,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from endpoints.controllers import router
-from database.session import engine, Base
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-# Create DB Tables
-Base.metadata.create_all(bind=engine)
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:qwerty@database:5432/mlocks_nferc_db")
 
-app = FastAPI(title="NFERC - Classificador de despesas a partir de NFe's com IA generativa (LLM)")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-app.include_router(router)
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
 
-@app.get("/health")
-def health():
-    return {"status": "UP", "architecture": "Layered RAG"}
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

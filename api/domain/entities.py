@@ -21,26 +21,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from endpoints.controllers import router
-from database.session import engine, Base
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text, DateTime, text
+from sqlalchemy.orm import declarative_base
 
-# Create DB Tables
-Base.metadata.create_all(bind=engine)
-
-app = FastAPI(title="NFERC - Classificador de despesas a partir de NFe's com IA generativa (LLM)")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-app.include_router(router)
+Base = declarative_base()
 
 
-@app.get("/health")
-def health():
-    return {"status": "UP", "architecture": "Layered RAG"}
+class Classificacao(Base):
+    __tablename__ = "classificacoes"
+    id = Column(Integer, primary_key=True)
+    xml_hash = Column(String(64))
+    categoria = Column(String(100))
+    justificativa = Column(Text)
+    origem = Column(String(20))
+    status = Column(String(20), default="sugerido")
+    valor = Column(String(20))
+    descricao = Column(String(200))
+    criado_em = Column(DateTime(), default=datetime.utcnow)
+    atualizado_em = Column(DateTime())
