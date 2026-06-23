@@ -341,7 +341,7 @@ Uma coleção de endpoints do Postman está localizada no arquivo [MLocks-NERC-N
 
 ### Classificar (POST):
 
-- **classificar**
+- **/classificar**
 
 Exemplo:
 
@@ -373,7 +373,7 @@ $ curl --location --request POST 'http://localhost:8000/classificar' \
 
 ### Aprovar por id (POST):
 
-- **classificacoes/{{id}}/aprovar**
+- **/classificacoes/{{id}}/aprovar**
 
 Exemplo:
 
@@ -396,7 +396,7 @@ $ curl --location --request POST 'http://localhost:8000/classificacoes/37/aprova
 
 ### Rejeitar por id (POST):
 
-- **classificacoes/{{id}}/rejeitar**
+- **/classificacoes/{{id}}/rejeitar**
 
 Exemplo:
 
@@ -537,6 +537,133 @@ $ curl --location 'http://localhost:8000/classificacoes?status=aprovado'
     "total": 49,
     "page": 1,
     "pages": 5
+}
+```
+
+</details>
+
+---
+
+### Lista de classificações (GET):
+
+- **/classificacoes?status=sugerido&page=1&limit=10**
+
+Exemplo:
+
+```bash
+$ curl --location 'http://localhost:8000/classificacoes?status=sugerido&page=1&limit=10'
+```
+
+<details>
+<summary><b>Resposta</b></summary>
+
+```json
+{
+    "items": [
+        {
+            "id": 174,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "O histórico de despesas aponta para a categoria Manutenção de Equipamentos, sendo que o valor da nota atual se refere à consulta contábil mensal. A classificação é justificada pela natureza das operações realizadas.",
+            "origem": "auto",
+            "status": "sugerido",
+            "valor": "1500.00",
+            "descricao": "CONSULTORIA CONTABIL MENSAL",
+            "criado_em": "2026-06-23T20:46:12.662170"
+        },
+        {
+            "id": 173,
+            "categoria": "Material de Construção",
+            "justificativa": "O histórico de compra apresenta o mesmo produto, com descrição e valores constantes. O pedido se encaixa na categoria Material de Construção.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "115.80",
+            "descricao": "MDF EUCATEX BRANCO 03MM COM TX 275X185 T-HDF 1FC BIANCO PRIME 1 FC SELADOR",
+            "criado_em": "2026-06-23T19:24:32.261375"
+        },
+        {
+            "id": 172,
+            "categoria": "Transporte",
+            "justificativa": "O histórico de compras demonstra a compra de Bicicletas Redstone Chroma, categorizando-as como transporte. O valor da compra é consistente com esse tipo de item e sua descrição, confirmando que as despesas são relacionadas ao transporte.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "2500.00",
+            "descricao": "BICICLETA REDSTONE CHROMA",
+            "criado_em": "2026-06-23T19:24:22.374232"
+        },
+        {
+            "id": 171,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "O histórico indica que o produto é classificado como Manutenção e Reparos, mas também em Manutenção de Equipamentos. A categoria 'Manutenção de Equipamentos' se encaixa melhor, pois a descrição do produto (RAIO INOX PTO, NIPLE, 2,0 X 283MM) indica que o item está sendo utilizado para manutenção de equipamentos, sem especificações sobre reparos.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "70.00",
+            "descricao": "RAIO INOX PTO, NIPLE, 2,0 X 283MM",
+            "criado_em": "2026-06-23T19:24:14.460872"
+        },
+        {
+            "id": 170,
+            "categoria": "Manutenção e Reparos",
+            "justificativa": "O pedido se enquadra na categoria de Manutenção e Reparos pois o item, CONDUITE TEFLON PRETO 20M,  é destinado a realizar reparos ou manutenção em equipamentos, como por exemplo veículos. A utilização do material para esse fim é justificada pela necessidade da manutenção.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "12.00",
+            "descricao": "CONDUITE TEFLON PRETO 20M",
+            "criado_em": "2026-06-23T19:23:59.310602"
+        },
+        {
+            "id": 169,
+            "categoria": "Transporte",
+            "justificativa": "A bicicleta Redstone Chroma foi comprada para transporte pessoal e não se enquadra na categoria de material de construção, como o MDF Eucatex Branco. O valor zero indica que a compra é apenas para uso pessoal e não representa despesas para o negócio.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "0",
+            "descricao": "",
+            "criado_em": "2026-06-23T19:23:47.433683"
+        },
+        {
+            "id": 168,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "O histórico aponta a categoria 'Manutenção de Equipamentos' como padrão para o produto 'MOV CENTRO PFIT, ABSOLUTE-102A, 24MM, PT'. A descrição detalha a natureza da compra, confirmando a categorização.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "124.00",
+            "descricao": "MOV CENTRO PFIT, ABSOLUTE-102A, 24MM, PT",
+            "criado_em": "2026-06-23T19:23:36.379461"
+        },
+        {
+            "id": 167,
+            "categoria": "Despesas com Equipamento",
+            "justificativa": "O histórico de despesas indica que o produto é classificado como 'Equipamento' e, considerando a descrição da nota atual, a compra se refere a um equipamento para ciclismo. Portanto, a categoria correta é Despesas com Equipamento.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "234.00",
+            "descricao": "SAPATILHA MTB AVVA PRETO 40 AVVA",
+            "criado_em": "2026-06-23T19:23:23.905234"
+        },
+        {
+            "id": 166,
+            "categoria": "Manutenção de Equipamentos",
+            "justificativa": "O histórico mostra que o produto é utilizado para manutenção de equipamentos, com especificações semelhantes às do pedido atual. Ajuste na descrição para maior clareza.",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "2.50",
+            "descricao": "RAIO INOX PTO, NIPLE, 2,0 X 290MM",
+            "criado_em": "2026-06-23T19:23:11.987050"
+        },
+        {
+            "id": 165,
+            "categoria": "Eletrônicos de entretenimento",
+            "justificativa": "O produto é um headset gamer, sendo classificado como eletrônicos de entretenimento, considerando a natureza do seu uso (jogos) e a categoria da venda (eletrônicos).",
+            "origem": "ollama",
+            "status": "sugerido",
+            "valor": "139.99",
+            "descricao": "Headset Gamer Redragon Hylas, RGB, 7.1 Surround, Drivers de 50mm, USB, Preto, H371-RGB",
+            "criado_em": "2026-06-23T19:23:01.592951"
+        }
+    ],
+    "total": 110,
+    "page": 1,
+    "pages": 11
 }
 ```
 
