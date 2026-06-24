@@ -688,6 +688,16 @@ $ curl --location 'http://localhost:8000/classificacoes?status=sugerido&page=1&l
 
 ---
 
+## Frontend Vue 3
+
+Aplicação Vue.js 3.
+
+Verifique se o backend está rodando em: http://localhost:8000
+
+Acesse: http://localhost:5173
+
+![NFERC](mlocks-nferc-frontend.png)
+
 ## Referências
 
 OLLama Library - [library](https://ollama.com/library)
