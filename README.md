@@ -85,11 +85,11 @@ Execute os seguintes comandos para fazer o build, subir seus containers e fazer 
 local):
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
+$ docker-compose build --no-cache
 ```
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+$ docker-compose up
 ```
 
 ```bash
@@ -194,7 +194,7 @@ Qualquer alteração no código Python será automaticamente recarregada, sem ne
 Caso novas dependências sejam adicionadas ao `api/requirements.txt`, execute novamente:
 
 ```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml build api
+$ docker-compose build api
 ```
 
 ### Estrutura de arquivos do Projeto
@@ -272,6 +272,7 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
     └── init_db.sql
 
 21 directories, 46 files
+
 ```
 
 ### Classificador em lote de NFe
