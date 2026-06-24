@@ -256,6 +256,7 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
 ├── LICENSE
 ├── MLocks-NERC-NFe-Expense-Receipt-Classifier.postman_collection.json
 ├── mlocks-nferc-database.png
+├── mlocks-nferc-frontend.png
 ├── mlocks-nferc-logo.png
 ├── mlocks-nferc-swagger-docs.png
 ├── nfe_classifier
@@ -286,7 +287,7 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
     ├── init_db.py
     └── init_db.sql
 
-25 directories, 57 files
+25 directories, 58 files
 ```
 
 ### Classificador em lote de NFe
