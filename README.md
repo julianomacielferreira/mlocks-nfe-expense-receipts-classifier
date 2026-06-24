@@ -179,7 +179,7 @@ O ambiente é composto pelos seguintes serviços:
 
 | Serviço          | Responsabilidade                |
 | ---------------- | ------------------------------- |
-| Frontend (Nginx) | Interface Web                   |
+| Frontend (Vue3)  | Interface Web                   |
 | FastAPI          | API REST e orquestração da IA   |
 | PostgreSQL       | Persistência das classificações |
 | Ollama           | Inferência dos modelos LLM      |
