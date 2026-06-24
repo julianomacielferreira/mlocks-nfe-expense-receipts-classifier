@@ -36,7 +36,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "// {\n//     \"xml_nfe\": \"<nfeProc xmlns=\\\"http://www.portalfiscal.inf.br/nfe\\\"><NFe><infNFe><det><prod><xProd>SERVICO DE HOSPEDAGEM DE SITE</xProd></prod></det><total><ICMSTot><vNF>299.90</vNF></ICMSTot></total></infNFe></NFe></nfeProc>\",\n//     \"modo\": \"ollama\"\n// }\n{\n    \"xml_nfe\": \"<nfeProc xmlns=\\\"http://www.portalfiscal.inf.br/nfe\\\"><NFe><infNFe><det><prod><xProd>CONSULTORIA CONTABIL MENSAL</xProd></prod></det><total><ICMSTot><vNF>1500.00</vNF></ICMSTot></total></infNFe></NFe></nfeProc>\",\n    \"modo\": \"ollama\"\n}",
+          "raw": "// {\n//     \"xml_nfe\": \"<nfeProc xmlns=\\\"http://www.portalfiscal.inf.br/nfe\\\"><NFe><infNFe><det><prod><xProd>SERVICO DE HOSPEDAGEM DE SITE</xProd></prod></det><total><ICMSTot><vNF>299.90</vNF></ICMSTot></total></infNFe></NFe></nfeProc>\",\n//     \"mode\": \"ollama\"\n// }\n{\n    \"xml_nfe\": \"<nfeProc xmlns=\\\"http://www.portalfiscal.inf.br/nfe\\\"><NFe><infNFe><det><prod><xProd>CONSULTORIA CONTABIL MENSAL</xProd></prod></det><total><ICMSTot><vNF>1500.00</vNF></ICMSTot></total></infNFe></NFe></nfeProc>\",\n    \"mode\": \"ollama\"\n}",
           "options": {
             "raw": {
               "language": "json"

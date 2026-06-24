@@ -222,7 +222,8 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
 │   ├── Dockerfile
 │   ├── domain
 │   │   ├── entities.py
-│   │   └── schemas.py
+│   │   ├── requests.py
+│   │   └── responses.py
 │   ├── endpoints
 │   │   └── controllers.py
 │   ├── main.py
@@ -235,7 +236,22 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
 ├── docker-compose.yml
 ├── .env.example
 ├── frontend
-│   └── index.html
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── postcss.config.js
+│   ├── public
+│   │   ├── favicon.svg
+│   │   └── icons.svg
+│   ├── README.md
+│   ├── src
+│   │   ├── App.vue
+│   │   ├── assets
+│   │   ├── components
+│   │   ├── main.js
+│   │   └── style.css
+│   ├── tailwind.config.js
+│   └── vite.config.js
 ├── .gitignore
 ├── LICENSE
 ├── MLocks-NERC-NFe-Expense-Receipt-Classifier.postman_collection.json
@@ -270,7 +286,7 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
     ├── init_db.py
     └── init_db.sql
 
-21 directories, 45 files
+25 directories, 57 files
 ```
 
 ### Classificador em lote de NFe
@@ -287,27 +303,29 @@ $ python3 nfe_classifier/main.py ./nfe_files/ --mode ollama --workers 2
 A saída seria algo como:
 
 ```
-Encontrados 16 XMLs
-✅ [1/16] 342230134055015_v0400-procNFe.xml -> Veículos e Transportes
-✅ [2/16] 42251144004468000120550010000013131485078828-procNFe.xml -> Manutenção e Reparos - Equipamentos de Oficina
-✅ [3/16] 42250644004468000120550010000006461043157399-procNFe.xml -> Transporte
-✅ [4/16] 42251144004468000120550010000012011178847429-procNFe.xml -> Transporte
-✅ [5/16] 42260300718661000157550010012017901706151365.xml -> Materiais de Construção
-✅ [6/16] 342220156142671_v0400-procNFe.xml -> Transporte
-✅ [7/16] 42250644004468000120550010000006361865636646-procNFe.xml -> Manutenção de Equipamentos
-✅ [8/16] 42220725124912000104550010000012211519672524-nfe.xml -> Transporte
-✅ [9/16] NFe42251238181833000179550010000068791673229235-nfe.xml -> Manutenção de Equipamentos
-✅ [10/16] 42250644004468000120550010000006471527213855-procNFe.xml -> Manutenção de Equipamentos
-✅ [11/16] 42250444004468000120550010000003821370231918-procNFe.xml -> Manutenção de Equipamentos
-✅ [12/16] 42250844004468000120550010000009321733053788-procNFe.xml -> Manutenção de Equipamentos
-✅ [13/16] 42230625124912000104550010000014921343202807-nfe.xml -> Transporte
-✅ [14/16] nfe6271606493106188290.xml -> Eletrônicos
-✅ [15/16] 42250644004468000120550010000005861406912160-procNFe.xml -> Manutenção de Equipamentos
-✅ [16/16] nota_500418-100.xml -> Materiais de Construção
+Encontrados 18 XMLs
+✅ [1/18] 42250644004468000120550010000006471527213855-procNFe.xml -> Materiais de Construção
+✅ [2/18] 42230325124912000104550010000014311580016342-nfe.xml -> Transporte
+✅ [3/18] 42260300718661000157550010012017901706151365.xml -> Despesas com Materiais de Construção
+✅ [4/18] 342230134055015_v0400-procNFe.xml -> Transporte
+✅ [5/18] 342220156142671_v0400-procNFe.xml -> Transporte
+✅ [6/18] 42250644004468000120550010000006361865636646-procNFe.xml -> Materiais de Uso e Manutenção
+✅ [7/18] nota_500418-100.xml -> Sem registro de despesas fiscais
+✅ [8/18] NFe42251238181833000179550010000068791673229235-nfe.xml -> Despesas com Materiais/Equipamentos
+✅ [9/18] 42230625124912000104550010000014921343202807-nfe.xml -> Transporte
+✅ [10/18] 42250644004468000120550010000006461043157399-procNFe.xml -> Equipamentos de Oficina/Manutenção
+✅ [11/18] 42250844004468000120550010000009321733053788-procNFe.xml -> Despesas de Manutenção
+✅ [12/18] 42250444004468000120550010000003821370231918-procNFe.xml -> Equipamentos de Produção
+✅ [13/18] 42251144004468000120550010000012011178847429-procNFe.xml -> Manutenção e Reparos
+✅ [14/18] 42250644004468000120550010000005861406912160-procNFe.xml -> Material de Manutenção
+✅ [15/18] Nota-1425-Serie-1.xml -> Despesa Sem Histórico
+✅ [16/18] 42220725124912000104550010000012211519672524-nfe.xml -> Transporte
+✅ [17/18] 42251144004468000120550010000013131485078828-procNFe.xml -> Manutenção e Reparos
+✅ [18/18] nfe6271606493106188290.xml -> Eletrônicos
 
-CSV salvo em: nfe_files/resultado_classificacao_20260622_183336.csv
-Tempo total: 254.80s
-Média por arquivo: 15.92s
+CSV salvo em: nfe_files/resultado_classificacao_20260624_134032.csv
+Tempo total: 171.27s
+Média por arquivo: 9.51s
 ```
 
 ### Modelos do Ollama e como utilizá-los
