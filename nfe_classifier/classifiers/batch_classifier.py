@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 import asyncio
 from pathlib import Path
 from classifiers.file_classifier import FileClassifier
@@ -40,6 +41,8 @@ class BatchClassifier:
         results = []
         for i, coro in enumerate(asyncio.as_completed(tasks), 1):
             res = await coro
-            print(f"{'✅' if res.status == 'sugerido' else '❌'} [{i}/{len(files)}] {res.arquivo} -> {res.categoria}")
+            print(
+                f"{'✅' if res.status == 'sugerido' else '❌'} [{i}/{len(files)}] {res.arquivo} -> {res.categoria}"
+            )
             results.append(res)
         return results

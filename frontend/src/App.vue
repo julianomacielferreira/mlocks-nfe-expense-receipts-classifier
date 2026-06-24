@@ -108,7 +108,7 @@ const total = ref(0)
 const limit = 10
 
 // Use Vite environment variables
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API = import.meta.env.API_URL || 'http://localhost:8000'
 
 const paginas = computed(() => Math.ceil(total.value / limit))
 

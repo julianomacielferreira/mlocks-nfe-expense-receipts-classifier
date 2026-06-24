@@ -21,13 +21,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 from dataclasses import dataclass
 import os
 
 
 @dataclass(frozen=True)
 class Settings:
-    api_url: str = os.getenv("API_URL", "http://localhost:8000/classificar")
+    api_url: str = os.getenv("API_URL", "http://localhost:8000")
     timeout: int = 120
     workers: int = 5
 

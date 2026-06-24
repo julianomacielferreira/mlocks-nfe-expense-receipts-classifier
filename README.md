@@ -25,7 +25,6 @@ Antes de iniciar, certifique-se de possuir os seguintes softwares instalados em 
 - _Docker 24+_
 - _Docker Compose v2+_
 - _Git_
-
 Opcionalmente, para executar scripts Python localmente (fora do Docker):
 
 - _Python 3.11+_
@@ -66,6 +65,7 @@ ENV=development
 MODE=ollama
 PROJECT_ID=mlocks-nferc
 API_PORT=8000
+API_URL=http://localhost:8000
 POSTGRES_DB=mlocks_nferc_db
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=qwerty
@@ -76,7 +76,6 @@ OLLAMA_URL=http://ollama:11434
 LLM_MODEL=gemma2:2b
 QDRANT_URL=http://qdrant:
 FRONTEND_PORT=5173
-VITE_API_URL=http://localhost:8000
 LOG_LEVEL=INFO
 ```
 

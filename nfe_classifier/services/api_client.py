@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 import httpx
 from config import settings
 
@@ -31,6 +32,8 @@ class HttpClassifier:
 
     async def classify(self, xml_clean: str, mode: str) -> dict:
         payload = {"xml_nfe": xml_clean, "mode": mode}
-        resp = await self.client.post(settings.api_url, json=payload, timeout=settings.timeout)
+        resp = await self.client.post(
+            settings.api_url + "/classificar", json=payload, timeout=settings.timeout
+        )
         resp.raise_for_status()
         return resp.json()

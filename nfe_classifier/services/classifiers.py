@@ -21,11 +21,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 from interfaces import Classifier
 
 
 class OllamaClassifier(Classifier):
-    def __init__(self, api): self.api = api
+    def __init__(self, api):
+        self.api = api
 
     async def classify(self, xml_clean, mode):
         return await self.api.classify(xml_clean, mode)
@@ -33,7 +35,13 @@ class OllamaClassifier(Classifier):
 
 class MockClassifier(Classifier):
     async def classify(self, xml_clean, mode):
-        return {"id": "mock", "categoria": "teste", "justificativa": "mock", "origem": mode, "status": "sugerido"}
+        return {
+            "id": "mock",
+            "categoria": "teste",
+            "justificativa": "mock",
+            "origem": mode,
+            "status": "sugerido",
+        }
 
 
 class ClassifierFactory:

@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 import time
 from pathlib import Path
 from interfaces import XmlParser, Classifier
@@ -51,7 +52,7 @@ class FileClassifier:
                 status=response.get("status", ""),
                 valor_xml=preview.valor,
                 descricao_xml=preview.descricao,
-                tempo_seg=round(time.time() - start, 2)
+                tempo_seg=round(time.time() - start, 2),
             )
         except Exception as e:
             return ClassificationResult(
@@ -61,5 +62,5 @@ class FileClassifier:
                 valor_xml=preview.valor,
                 descricao_xml=preview.descricao,
                 tempo_seg=round(time.time() - start, 2),
-                erro=str(e)[:200]
+                erro=str(e)[:200],
             )
