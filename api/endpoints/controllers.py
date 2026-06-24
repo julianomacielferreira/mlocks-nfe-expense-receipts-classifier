@@ -21,12 +21,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from database.session import get_db
-from domain.schemas import ClassificarRequest, ClassificarResponse
+from domain.requests import ClassificarRequest
+from domain.responses import ClassificarResponse
 from util import classification_service
 
 router = APIRouter()
@@ -42,10 +44,10 @@ async def classify(req: ClassificarRequest, db: Session = Depends(get_db)):
 
 @router.get("/classificacoes")
 def list_classifications(
-        status: Optional[str] = None,
-        page: int = Query(1, ge=1),
-        limit: int = Query(10, le=100),
-        db: Session = Depends(get_db)  # Auto-manages session lifecycle
+    status: Optional[str] = None,
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, le=100),
+    db: Session = Depends(get_db),  # Auto-manages session lifecycle
 ):
     return classification_service.list_classifications(db, status, page, limit)
 

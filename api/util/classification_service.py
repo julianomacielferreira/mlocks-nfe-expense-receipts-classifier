@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 import hashlib
 from typing import Optional
 from sqlalchemy.orm import Session
@@ -46,7 +47,7 @@ async def process_new_nfe(xml_nfe: str, mode: str, db: Session):
         "justificativa": result["justificativa"],
         "origem": mode,
         "valor": dados["valor"],
-        "descricao": dados["descricao"]
+        "descricao": dados["descricao"],
     }
 
     reg = classification_repo.create(db, record_data)
@@ -70,12 +71,13 @@ def list_classifications(db: Session, status: Optional[str], page: int, limit: i
                 "status": i.status,
                 "valor": i.valor,
                 "descricao": i.descricao,
-                "criado_em": i.criado_em.isoformat() if i.criado_em else None
-            } for i in items
+                "criado_em": i.criado_em.isoformat() if i.criado_em else None,
+            }
+            for i in items
         ],
         "total": total,
         "page": page,
-        "pages": (total + limit - 1) // limit
+        "pages": (total + limit - 1) // limit,
     }
 
 
@@ -94,11 +96,14 @@ def approve_classification(id: int, db: Session) -> bool:
         text_to_vectorize = f"Produto: {classification.descricao}. Justificativa: {classification.justificativa}"
         chunks = chunk_text(text_to_vectorize)
 
-        upsert_vectors(chunks, metadata={
-            "id_banco": classification.id,
-            "descricao": classification.descricao,
-            "categoria": classification.categoria
-        })
+        upsert_vectors(
+            chunks,
+            metadata={
+                "id_banco": classification.id,
+                "descricao": classification.descricao,
+                "categoria": classification.categoria,
+            },
+        )
     except Exception as ex:
         print(f"Error trying to save in Qdrant: {ex}")
 

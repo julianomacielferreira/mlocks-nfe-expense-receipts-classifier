@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 import os
 import uuid
 from qdrant_client import QdrantClient
@@ -35,9 +36,7 @@ qdrant_client = QdrantClient(url=QDRANT_URL)
 async def search_similar_expenses(descricao: str, limit: int = 3) -> list:
     query_vector = embeddings.embed_query(descricao)
     results = qdrant_client.search(
-        collection_name=COLLECTION_NAME,
-        query_vector=query_vector,
-        limit=limit
+        collection_name=COLLECTION_NAME, query_vector=query_vector, limit=limit
     )
     return results
 
@@ -46,9 +45,11 @@ def upsert_vectors(chunks: list, metadata: dict):
     points = []
     for chunk in chunks:
         vector = embeddings.embed_query(chunk)
-        points.append(PointStruct(
-            id=str(uuid.uuid4()),
-            vector=vector,
-            payload={**metadata, "texto_chunk": chunk}
-        ))
+        points.append(
+            PointStruct(
+                id=str(uuid.uuid4()),
+                vector=vector,
+                payload={**metadata, "texto_chunk": chunk},
+            )
+        )
     qdrant_client.upsert(collection_name=COLLECTION_NAME, points=points)

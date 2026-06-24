@@ -23,9 +23,7 @@ THE SOFTWARE.
 """
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Text, DateTime, text
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+from database.session import Base
 
 
 class Classificacao(Base):

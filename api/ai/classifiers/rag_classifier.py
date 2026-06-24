@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 from ai.retriever.vector_store import search_similar_expenses
 from ai.prompts.builder import build_classification_prompt
 from ai.generator.llm_client import generate_json_response

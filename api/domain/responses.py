@@ -22,9 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from pydantic import BaseModel
 
 
-def chunk_text(text: str) -> list[str]:
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-    return splitter.split_text(text)
+class ClassificarResponse(BaseModel):
+    id: int
+    categoria: str
+    justificativa: str
+    origem: str
+    status: str

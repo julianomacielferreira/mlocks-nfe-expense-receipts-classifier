@@ -21,18 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 from pydantic import BaseModel
-from typing import Literal, Optional
+from typing import Literal
 
 
 class ClassificarRequest(BaseModel):
     xml_nfe: str
     mode: Literal["auto", "mock", "ollama"] = "auto"
-
-
-class ClassificarResponse(BaseModel):
-    id: int
-    categoria: str
-    justificativa: str
-    origem: str
-    status: str

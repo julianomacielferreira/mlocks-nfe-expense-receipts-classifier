@@ -232,7 +232,6 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
 │   └── util
 │       ├── classification_service.py
 │       └── xml_parser.py
-├── docker-compose.dev.yml
 ├── docker-compose.yml
 ├── .env.example
 ├── frontend
@@ -271,8 +270,7 @@ O projeto segue uma arquitetura em camadas: API → RAG → LLM → Qdrant → P
     ├── init_db.py
     └── init_db.sql
 
-21 directories, 46 files
-
+21 directories, 45 files
 ```
 
 ### Classificador em lote de NFe

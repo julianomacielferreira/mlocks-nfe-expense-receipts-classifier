@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 from typing import Optional, Tuple, List
 from sqlalchemy.orm import Session
 from domain.entities import Classificacao
@@ -41,7 +42,7 @@ def get_by_id(db: Session, record_id: int) -> Optional[Classificacao]:
 
 
 def list_all(
-        db: Session, status: Optional[str], offset: int, limit: int
+    db: Session, status: Optional[str], offset: int, limit: int
 ) -> Tuple[List[Classificacao], int]:
     """Returns a list of classifications and the total count for pagination."""
     query = db.query(Classificacao)

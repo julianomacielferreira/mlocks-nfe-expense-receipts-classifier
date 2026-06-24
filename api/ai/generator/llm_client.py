@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 """
+
 import os
 import json
 import httpx
@@ -43,18 +44,15 @@ async def generate_json_response(prompt: str) -> dict:
             "type": "object",
             "properties": {
                 "categoria": {"type": "string"},
-                "justificativa": {"type": "string"}
+                "justificativa": {"type": "string"},
             },
-            "required": ["categoria", "justificativa"]
-        }
+            "required": ["categoria", "justificativa"],
+        },
     }
 
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(
-                f"{OLLAMA_URL}/api/generate",
-                json=payload
-            )
+            response = await client.post(f"{OLLAMA_URL}/api/generate", json=payload)
 
             # Raise an error if the HTTP request failed (e.g., 404, 500)
             response.raise_for_status()
@@ -67,13 +65,17 @@ async def generate_json_response(prompt: str) -> dict:
                 raise ValueError("A resposta do modelo não é um objeto JSON válido.")
 
             if "categoria" not in result or "justificativa" not in result:
-                raise ValueError(f"JSON retornado não contém os campos obrigatórios: {result}")
+                raise ValueError(
+                    f"JSON retornado não contém os campos obrigatórios: {result}"
+                )
 
             return result
 
     except httpx.HTTPError as ex:
         raise RuntimeError(f"Erro de comunicação com o Ollama: {str(ex)}")
     except json.JSONDecodeError as ex:
-        raise ValueError(f"Falha ao fazer parse do JSON retornado pelo Ollama: {str(ex)}")
+        raise ValueError(
+            f"Falha ao fazer parse do JSON retornado pelo Ollama: {str(ex)}"
+        )
     except Exception as ex:
         raise RuntimeError(f"Erro inesperado na geração do LLM: {str(ex)}")
