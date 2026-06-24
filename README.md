@@ -76,6 +76,7 @@ OLLAMA_URL=http://ollama:11434
 LLM_MODEL=gemma2:2b
 QDRANT_URL=http://qdrant:
 FRONTEND_PORT=5173
+VITE_API_URL=http://localhost:8000
 LOG_LEVEL=INFO
 ```
 
@@ -156,7 +157,7 @@ Após a inicialização, os serviços estarão disponíveis em:
 
 | Serviço  | URL                        |
 |----------|----------------------------|
-| Frontend | http://localhost:8080      |
+| Frontend | http://localhost:5173      |
 | API      | http://localhost:8000      |
 | Swagger  | http://localhost:8000/docs |
 | Ollama   | http://localhost:11434     |
