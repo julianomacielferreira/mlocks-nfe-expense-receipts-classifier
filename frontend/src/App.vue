@@ -1,8 +1,8 @@
 <template>
-  <div class="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+  <div class="mx-auto p-6 bg-gray-50 min-h-screen">
     <header class="mb-6">
       <h1 class="text-2xl font-bold text-gray-800">Classificações Sugeridas</h1>
-      <p class="text-gray-500">MLocks NERC (NFe Expense Receipt Classifier) - Validação</p>
+      <p class="text-gray-500">MLocks NERC (NFe Expense Receipt Classifier)</p>
     </header>
 
     <div class="flex gap-2 mb-4">
@@ -27,9 +27,9 @@
             <th class="p-3">ID</th>
             <th>Descrição</th>
             <th>Valor</th>
-            <th>Categoria</th>
+            <th class="p-3">Categoria</th>
             <th>Origem</th>
-            <th>Ações</th>
+            <th class="p-3">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@
             <td class="p-3">{{ item.id }}</td>
             <td class="max-w-xs truncate" :title="item.descricao">{{ item.descricao }}</td>
             <td class="whitespace-nowrap">R$ {{ item.valor }}</td>
-            <td>
+            <td class="p-3">
               <div class="font-medium">{{ item.categoria }}</div>
               <div class="text-xs text-gray-500">{{ item.justificativa }}</div>
             </td>
@@ -46,7 +46,7 @@
                 {{ item.origem }}
               </span>
             </td>
-            <td class="space-x-2">
+            <td class="p-3">
               <template v-if="item.status === 'sugerido'">
                 <button @click="aprovar(item.id)" class="text-green-600 hover:underline">Aprovar</button>
                 <button @click="rejeitar(item.id)" class="text-red-600 hover:underline">Rejeitar</button>
