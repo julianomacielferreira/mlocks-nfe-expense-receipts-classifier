@@ -111,7 +111,7 @@ $ docker exec -it mlocks-nferc-ollama ollama run gemma2:2b
 Confira se todos os serviços estão em execução:
 
 ```bash
-$ docker compose ps
+$ docker ps
 ```
 
 ## Baixando outros modelos da IA
@@ -164,13 +164,13 @@ Após a inicialização, os serviços estarão disponíveis em:
 ## Encerrando a aplicação
 
 ```bash
-$ docker compose down
+$ docker-compose down
 ```
 
 Para remover os volumes persistentes:
 
 ```bash
-docker compose down -v
+docker-compose down -v
 ```
 
 ### Estrutura dos containers
