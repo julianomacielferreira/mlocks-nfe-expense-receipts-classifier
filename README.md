@@ -25,7 +25,8 @@ Antes de iniciar, certifique-se de possuir os seguintes softwares instalados em 
 - _Docker 24+_
 - _Docker Compose v2+_
 - _Git_
-Opcionalmente, para executar scripts Python localmente (fora do Docker):
+
+Para executar scripts Python localmente (fora do Docker):
 
 - _Python 3.11+_
 - _pip_
