@@ -349,7 +349,7 @@ $ curl --location --request POST 'http://localhost:8000/classificar' \
 --header 'Content-Type: application/json' \
 --data '{
     "xml_nfe": "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\"><NFe><infNFe><det><prod><xProd>CONSULTORIA CONTABIL MENSAL</xProd></prod></det><total><ICMSTot><vNF>1500.00</vNF></ICMSTot></total></infNFe></NFe></nfeProc>",
-    "modo": "ollama"
+    "mode": "ollama"
 }'
 ```
 

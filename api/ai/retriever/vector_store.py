@@ -25,12 +25,23 @@ THE SOFTWARE.
 import os
 import uuid
 from qdrant_client import QdrantClient
-from qdrant_client.models import PointStruct
+from qdrant_client.models import VectorParams, Distance, PointStruct
 from ai.embeddings.provider import embeddings
 
 QDRANT_URL = os.getenv("QDRANT_URL", "http://qdrant:6333")
 COLLECTION_NAME = "nferc_classificacoes"
 qdrant_client = QdrantClient(url=QDRANT_URL)
+
+try:
+    if not qdrant_client.collection_exists(COLLECTION_NAME):
+        qdrant_client.create_collection(
+            collection_name=COLLECTION_NAME,
+            vectors_config=VectorParams(
+                size=768, distance=Distance.COSINE
+            ),  # nomic-embed-text uses 768 dimensions
+        )
+except Exception as e:
+    print(f"Warning: Could not initialize Qdrant collection: {e}")
 
 
 async def search_similar_expenses(descricao: str, limit: int = 3) -> list:
