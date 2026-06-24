@@ -1,4 +1,4 @@
-## NFERC - Classificador de despesas a partir de Nota Fiscais Eletrônicas com IA generativa (LLM).
+## NFERC - Classificador de despesas a partir de Notas Fiscais Eletrônicas com IA generativa (LLM).
 
 **NFERC - _Nota Fiscal Eletrônica Receipt Classifier_** é um sistema que automatiza a classificação de despesas a partir
 de
